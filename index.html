@@ -1,0 +1,3607 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>8th Pay Commission Calculator v3.3 — Premium</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN TOKENS — Premium Government FinTech Dark
+   ═══════════════════════════════════════════════ */
+:root {
+  /* Core backgrounds */
+  --bg-deep:    #060A17;
+  --bg-base:    #0A1020;
+  --bg-panel:   #0F1729;
+  --bg-card:    #131D35;
+  --bg-input:   #0C1628;
+  --bg-hover:   #1A2540;
+
+  /* Accent palette */
+  --gold:       #E8A936;
+  --gold-dim:   #9A6E1A;
+  --gold-glow:  rgba(232,169,54,0.18);
+  --blue:       #4B9FFA;
+  --blue-dim:   #1A4A8A;
+  --blue-glow:  rgba(75,159,250,0.15);
+  --teal:       #26C6DA;
+  --teal-glow:  rgba(38,198,218,0.12);
+  --grn:        #22C55E;
+  --grn-glow:   rgba(34,197,94,0.12);
+  --red:        #F43F5E;
+  --red-glow:   rgba(244,63,94,0.12);
+  --warn:       #FB923C;
+  --purple:     #A78BFA;
+  --purple-glow:rgba(167,139,250,0.15);
+  --pink:       #F472B6;
+
+  /* Text */
+  --text:       #E2E8F0;
+  --text-dim:   #94A3B8;
+  --text-muted: #475569;
+  --white:      #FFFFFF;
+
+  /* Borders */
+  --border:     rgba(255,255,255,0.06);
+  --border-md:  rgba(255,255,255,0.10);
+  --border-hi:  rgba(255,255,255,0.18);
+
+  /* Shadows */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.4);
+  --shadow-md:  0 4px 24px rgba(0,0,0,0.5);
+  --shadow-lg:  0 8px 48px rgba(0,0,0,0.6);
+  --shadow-xl:  0 16px 64px rgba(0,0,0,0.7);
+
+  /* Radius */
+  --r-sm:  6px;
+  --r-md:  10px;
+  --r-lg:  14px;
+  --r-xl:  20px;
+
+  /* Transitions */
+  --t-fast: 0.15s ease;
+  --t-med:  0.25s ease;
+  --t-slow: 0.4s ease;
+}
+
+/* ── RESET & BASE ── */
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body {
+  background: var(--bg-deep);
+  background-image:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(75,159,250,0.07) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 120%, rgba(167,139,250,0.05) 0%, transparent 50%);
+  background-attachment: fixed;
+  color: var(--text);
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── CUSTOM SCROLLBAR ── */
+::-webkit-scrollbar{width:5px;height:5px}
+::-webkit-scrollbar-track{background:var(--bg-deep)}
+::-webkit-scrollbar-thumb{background:var(--blue-dim);border-radius:3px}
+::-webkit-scrollbar-thumb:hover{background:var(--blue)}
+
+/* ── INDIA FLAG BAR ── */
+.flag-bar {
+  height: 3px;
+  background: linear-gradient(90deg,
+    #FF9933 0%, #FF9933 33.3%,
+    #FFFFFF 33.3%, #FFFFFF 66.6%,
+    #138808 66.6%, #138808 100%
+  );
+}
+
+/* ── PREMIUM HEADER ── */
+.header {
+  background: linear-gradient(135deg, #0A1535 0%, #121D40 40%, #1A1030 100%);
+  padding: 16px 20px 14px;
+  text-align: center;
+  position: relative;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+}
+.header::before {
+  content: '';
+  position: absolute;
+  top: -60px; left: 50%; transform: translateX(-50%);
+  width: 300px; height: 300px;
+  background: radial-gradient(circle, rgba(75,159,250,0.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+.header-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(232,169,54,0.1);
+  border: 1px solid rgba(232,169,54,0.25);
+  border-radius: 20px;
+  padding: 3px 10px;
+  margin-bottom: 8px;
+  font-size: 0.68rem;
+  color: var(--gold);
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+.header h1 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--white);
+  letter-spacing: 1.5px;
+  text-shadow: 0 0 30px rgba(75,159,250,0.3);
+  line-height: 1.2;
+}
+.header-sub {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+.header-pill {
+  font-size: 0.68rem;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+}
+.header-pill.gold  { background: rgba(232,169,54,0.12);  color: var(--gold);   border: 1px solid rgba(232,169,54,0.2) }
+.header-pill.blue  { background: rgba(75,159,250,0.10);  color: var(--blue);   border: 1px solid rgba(75,159,250,0.2) }
+.header-pill.green { background: rgba(34,197,94,0.10);   color: var(--grn);    border: 1px solid rgba(34,197,94,0.2) }
+
+/* ── INFO BOXES ── */
+.info-box {
+  margin: 10px 14px 0;
+  padding: 12px 14px;
+  border-radius: var(--r-md);
+  border: 1px solid var(--border);
+}
+.info-box.da-exp {
+  background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(34,197,94,0.02));
+  border-color: rgba(34,197,94,0.2);
+}
+.info-box.da-exp h4 { color: var(--grn); font-size: 0.8rem; font-weight: 700; margin-bottom: 4px }
+.info-box.da-exp p  { color: var(--warn); font-size: 0.72rem; line-height: 1.6 }
+.info-box.fix-note  {
+  background: linear-gradient(135deg, rgba(167,139,250,0.06), rgba(167,139,250,0.02));
+  border-color: rgba(167,139,250,0.2);
+}
+.info-box.fix-note h4 { color: var(--purple); font-size: 0.8rem; font-weight: 700; margin-bottom: 4px }
+.info-box.fix-note ul { padding-left: 16px }
+.info-box.fix-note li { color: var(--text-dim); font-size: 0.72rem; line-height: 1.65 }
+
+/* ── INPUT CARD (main form wrapper) ── */
+.input-card {
+  margin: 12px;
+  background: var(--bg-card);
+  border-radius: var(--r-lg);
+  padding: 14px 0 6px;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
+}
+
+/* ── FORM LABELS & FIELDS ── */
+.field-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  padding: 8px 14px 3px;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.field-note {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  padding: 0 14px 5px;
+  line-height: 1.5;
+}
+input[type=text], input[type=number], select {
+  width: calc(100% - 28px);
+  margin: 0 14px;
+  background: var(--bg-input);
+  color: var(--white);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  font-size: 1rem;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+  appearance: none;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+input[type=number]:focus, input[type=text]:focus, select:focus {
+  border-color: rgba(75,159,250,0.5);
+  box-shadow: 0 0 0 3px rgba(75,159,250,0.08);
+}
+select {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M0 0l6 8 6-8z' fill='%2364748B'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: calc(100% - 12px) 50%;
+  padding-right: 32px;
+  cursor: pointer;
+}
+select option { background: #1B2A3B }
+
+/* ── SUB-BOXES ── */
+.sub-box {
+  margin: 10px 14px 4px;
+  border-radius: var(--r-md);
+  padding: 12px 12px 10px;
+  border: 1px solid var(--border);
+  transition: border-color var(--t-fast);
+}
+.sub-box:hover { border-color: var(--border-hi) }
+.sub-box h4 { font-size: 0.8rem; font-weight: 700; margin-bottom: 3px }
+.sub-box .sub-note { font-size: 0.68rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 7px }
+.sub-box input {
+  width: 100%; margin: 0;
+  background: var(--bg-input); color: var(--white);
+  border: 1px solid var(--border-md); border-radius: var(--r-sm);
+  padding: 9px 11px; font-size: 1rem;
+  font-family: 'Exo 2', sans-serif; outline: none;
+  transition: border-color var(--t-fast);
+}
+.sub-box input:focus { border-color: rgba(75,159,250,0.4) }
+
+.sub-box.da7-box { background: linear-gradient(135deg, rgba(75,159,250,0.05), rgba(75,159,250,0.02)); border-color: rgba(75,159,250,0.2) }
+.sub-box.da8-box { background: linear-gradient(135deg, rgba(34,197,94,0.05), rgba(34,197,94,0.02)); border-color: rgba(34,197,94,0.2) }
+.sub-box.cgeis-box { background: linear-gradient(135deg, rgba(251,146,60,0.05), rgba(251,146,60,0.02)); border-color: rgba(251,146,60,0.2) }
+.sub-box.da7-box h4 { color: var(--blue) }
+.sub-box.da8-box h4 { color: var(--grn) }
+.sub-box.cgeis-box h4 { color: var(--warn) }
+
+.cgeis-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 5px }
+.cgeis-row label { font-size: 0.72rem; color: var(--text-dim); display: block; margin-bottom: 4px }
+
+/* ── FITMENT BOX ── */
+.fitment-box {
+  margin: 10px 14px 0;
+  background: linear-gradient(135deg, rgba(167,139,250,0.07), rgba(167,139,250,0.02));
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: var(--r-md);
+  padding: 12px;
+}
+.fitment-box h4 { color: var(--purple); font-size: 0.8rem; font-weight: 700; margin-bottom: 4px }
+.fitment-row { display: flex; gap: 8px; align-items: center }
+.fitment-input {
+  flex: 1;
+  background: var(--bg-input) !important;
+  border: 1px solid rgba(167,139,250,0.25) !important;
+  border-radius: var(--r-sm) !important;
+  padding: 9px 11px !important;
+  color: var(--white) !important;
+  font-size: 1rem !important;
+  font-family: 'Exo 2', sans-serif !important;
+  outline: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+.fitment-input:focus { border-color: rgba(167,139,250,0.5) !important }
+.adj-col { display: flex; flex-direction: column; gap: 4px }
+.adj-btn {
+  background: rgba(167,139,250,0.1);
+  color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.25);
+  border-radius: var(--r-sm);
+  padding: 4px 14px;
+  font-size: 0.88rem;
+  cursor: pointer;
+  font-weight: 700;
+  transition: background var(--t-fast);
+}
+.adj-btn:hover { background: rgba(167,139,250,0.2) }
+.ff-presets { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px }
+.ff-btn {
+  background: rgba(167,139,250,0.06);
+  color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: var(--r-sm);
+  padding: 4px 10px;
+  font-size: 0.72rem;
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  transition: all var(--t-fast);
+  font-weight: 600;
+}
+.ff-btn:hover { background: rgba(167,139,250,0.18); border-color: rgba(167,139,250,0.5) }
+
+/* ── CALCULATE BUTTON ── */
+.calc-btn {
+  margin: 14px 14px 10px;
+  width: calc(100% - 28px);
+  background: linear-gradient(135deg, #1a4a9f 0%, #6b2080 50%, #9b2040 100%);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 15px;
+  font-size: 1.05rem;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 1.5px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: transform var(--t-fast), box-shadow var(--t-fast);
+  box-shadow: 0 4px 24px rgba(107,32,128,0.4), 0 0 0 1px rgba(255,255,255,0.06);
+}
+.calc-btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+  opacity: 0;
+  transition: opacity var(--t-fast);
+}
+.calc-btn:hover::before { opacity: 1 }
+.calc-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(107,32,128,0.55), 0 0 0 1px rgba(255,255,255,0.1) }
+.calc-btn:active { transform: translateY(0); box-shadow: 0 2px 12px rgba(107,32,128,0.4) }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px; left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: rgba(20,30,55,0.95);
+  color: var(--white);
+  padding: 12px 20px;
+  border-radius: var(--r-md);
+  font-size: 0.85rem;
+  display: none;
+  z-index: 999;
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--border-md);
+  backdrop-filter: blur(12px);
+  transition: transform var(--t-med);
+}
+.toast.show { display: block; transform: translateX(-50%) translateY(0) }
+
+/* ── SLIDE TOPBAR ── */
+.slide-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 8px;
+  background: rgba(10,16,32,0.8);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.slide-title {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--purple);
+  letter-spacing: 0.8px;
+}
+.slide-counter {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255,255,255,0.04);
+  padding: 3px 10px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+}
+
+/* ── ZOOM CONTROLS ── */
+.zoom-controls { display: flex; align-items: center; gap: 4px; margin-left: 8px }
+.zoom-btn {
+  background: rgba(167,139,250,0.08);
+  color: var(--purple);
+  border: 1px solid rgba(167,139,250,0.2);
+  border-radius: var(--r-sm);
+  width: 28px; height: 28px;
+  font-size: 1.05rem; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all var(--t-fast);
+  font-family: 'Rajdhani', sans-serif;
+}
+.zoom-btn:hover { background: rgba(167,139,250,0.2); border-color: rgba(167,139,250,0.5) }
+.zoom-btn:active { transform: scale(0.92) }
+.zoom-level {
+  font-family: 'Share Tech Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  min-width: 34px;
+  text-align: center;
+}
+
+/* ── SLIDE NAV BOTTOM ── */
+.slide-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px;
+  background: var(--bg-base);
+  border-top: 1px solid var(--border);
+  position: sticky;
+  bottom: 0;
+}
+.nav-btn {
+  background: linear-gradient(135deg, #1A3A9F, #6B2080);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 10px 20px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: transform var(--t-fast), opacity var(--t-fast), box-shadow var(--t-fast);
+  min-width: 80px;
+}
+.nav-btn:hover  { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(107,32,128,0.4) }
+.nav-btn:disabled { background: rgba(255,255,255,0.05); color: var(--text-muted); cursor: not-allowed; transform: none; box-shadow: none }
+.slide-dots { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; justify-content: center; flex: 1; padding: 0 10px }
+.slide-dot {
+  width: 7px; height: 7px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+  transition: all var(--t-med);
+  flex-shrink: 0;
+}
+.slide-dot.active { background: var(--purple); transform: scale(1.5); box-shadow: 0 0 6px rgba(167,139,250,0.5) }
+.slide-dot:hover:not(.active) { background: rgba(255,255,255,0.35) }
+
+/* ── SLIDESHOW WRAP ── */
+#slideshow-wrap { transform-origin: top center; transition: transform 0.2s ease }
+.ppt-slide { display: none; animation: slideIn 0.35s cubic-bezier(0.4,0,0.2,1) }
+.ppt-slide.active { display: block }
+.ppt-slide.slide-out { animation: slideOut 0.25s ease forwards }
+@keyframes slideIn { from{opacity:0;transform:translateX(30px)} to{opacity:1;transform:translateX(0)} }
+@keyframes slideOut { from{opacity:1;transform:translateX(0)} to{opacity:0;transform:translateX(-30px)} }
+
+/* ── PAY MATRIX SELECTOR ── */
+.pm-box { margin: 0 0 2px; background: rgba(38,198,218,0.04); border-bottom: 1px solid rgba(38,198,218,0.15) }
+.pm-header {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 11px 14px; cursor: pointer;
+  color: var(--teal); font-size: 0.88rem; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif; letter-spacing: 0.5px;
+  transition: background var(--t-fast);
+}
+.pm-header:hover { background: rgba(38,198,218,0.06) }
+.pm-lvl-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 6px }
+.pm-lvl-btn {
+  padding: 5px 10px; border-radius: var(--r-sm);
+  border: 1px solid rgba(38,198,218,0.2);
+  background: var(--bg-input); color: var(--text-muted);
+  font-size: 0.72rem; cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  transition: all var(--t-fast); min-width: 36px; text-align: center;
+}
+.pm-lvl-btn:hover { border-color: var(--teal); color: var(--teal) }
+.pm-lvl-btn.active { background: var(--teal); color: #000; font-weight: 700; border-color: var(--teal) }
+.pm-cell-grid {
+  display: grid; grid-template-columns: repeat(4,1fr);
+  gap: 4px; max-height: 180px; overflow-y: auto; padding-right: 2px;
+}
+.pm-cell-btn {
+  padding: 5px 4px; border-radius: var(--r-sm);
+  border: 1px solid var(--border); background: var(--bg-input);
+  font-size: 0.68rem; cursor: pointer; text-align: center;
+  font-family: 'Share Tech Mono', monospace; color: var(--text);
+  transition: all var(--t-fast); line-height: 1.3;
+}
+.pm-cell-btn:hover { border-color: var(--gold); color: var(--gold) }
+.pm-cell-btn.active { background: var(--gold); color: #000; font-weight: 700; border-color: var(--gold) }
+.pm-cell-btn .idx { font-size: 0.6rem; color: var(--text-muted); display: block }
+.pm-cell-btn.active .idx { color: rgba(0,0,0,0.6) }
+.pm-cell-grid::-webkit-scrollbar { width: 3px }
+.pm-cell-grid::-webkit-scrollbar-thumb { background: var(--teal); border-radius: 2px }
+
+/* ── OUTPUT ELEMENTS ── */
+#output { padding-bottom: 0 }
+
+/* ── Level Info ── */
+.level-info {
+  margin: 8px 12px 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 9px 14px;
+  font-size: 0.75rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+}
+.level-info span { color: var(--warn); font-weight: 700 }
+
+/* TPT Override Badge */
+.tpt-override-badge {
+  margin: 6px 12px 0;
+  background: rgba(232,169,54,0.06);
+  border: 1px solid rgba(232,169,54,0.25);
+  border-radius: var(--r-sm);
+  padding: 7px 12px;
+  font-size: 0.75rem;
+  color: var(--gold);
+  text-align: center;
+  display: none;
+}
+
+/* ── SALARY SLIPS ── */
+.slips-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin: 8px 12px }
+.slip { border-radius: var(--r-md); background: var(--bg-card); overflow: hidden; border: 1px solid var(--border) }
+.slip-header {
+  padding: 8px 10px;
+  font-size: 0.78rem; font-weight: 700;
+  text-align: center; line-height: 1.4;
+}
+.sec-header { padding: 4px 10px; font-size: 0.68rem; font-weight: 700; color: rgba(0,0,0,0.8); letter-spacing: 0.5px }
+.slip-row { display: flex; justify-content: space-between; padding: 3px 10px; font-size: 0.72rem; border-bottom: 1px solid var(--border) }
+.slip-row .lbl { color: var(--text-dim) }
+.slip-row .val { font-family: 'Share Tech Mono', monospace; color: var(--text) }
+.slip-divider { height: 1px; margin: 4px 8px; background: var(--border-md) }
+.slip-total { display: flex; justify-content: space-between; padding: 4px 10px }
+.slip-total .lbl { font-size: 0.75rem; font-weight: 700 }
+.slip-total .val { font-family: 'Share Tech Mono', monospace; font-size: 0.8rem; font-weight: 700 }
+
+/* ── TIMELINE ── */
+.timeline-box {
+  margin: 8px 12px 4px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  box-shadow: var(--shadow-sm);
+}
+.timeline-box h3 { font-size: 0.85rem; font-weight: 700; color: var(--warn); margin-bottom: 9px }
+.tl-row {
+  display: flex; justify-content: space-between;
+  padding: 4px 0; border-bottom: 1px solid var(--border);
+}
+.tl-date { font-family: 'Share Tech Mono', monospace; font-size: 0.75rem; font-weight: 700; min-width: 130px }
+.tl-note { font-size: 0.7rem; color: var(--text-muted); text-align: right }
+.tl-row.active .tl-date { color: var(--grn) }
+.tl-row.active .tl-note { color: var(--grn) }
+
+/* ── ARREARS BOX ── */
+.arrears-box {
+  margin: 6px 12px;
+  background: linear-gradient(135deg, rgba(34,197,94,0.06), rgba(34,197,94,0.02));
+  border: 1px solid rgba(34,197,94,0.2);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+}
+.arrears-box h3 { font-size: 0.88rem; font-weight: 700; color: var(--grn); text-align: center; margin-bottom: 9px }
+.arr-row { display: flex; justify-content: space-between; align-items: center; padding: 4px 0; border-bottom: 1px solid rgba(34,197,94,0.08) }
+.arr-label { font-size: 0.78rem; color: var(--text-dim); flex: 1; padding-right: 8px }
+.arr-val { font-family: 'Share Tech Mono', monospace; font-size: 0.9rem; font-weight: 700; color: var(--grn) }
+.arr-note { font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-top: 5px }
+
+/* ── COMPARISON TABLE ── */
+.comp-table {
+  margin: 6px 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.comp-title { padding: 12px 14px 8px; font-size: 0.9rem; font-weight: 700; color: var(--warn); letter-spacing: 0.5px }
+.comp-head {
+  display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 1fr;
+  background: rgba(255,255,255,0.04); padding: 6px 10px;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.comp-head span { font-size: 0.68rem; font-weight: 700; color: var(--text-muted); letter-spacing: 0.3px }
+.comp-head span:not(:first-child) { text-align: right }
+.comp-row { display: grid; grid-template-columns: 2fr 1.2fr 1.2fr 1fr; padding: 5px 10px; font-size: 0.72rem }
+.comp-row:nth-child(even) { background: rgba(255,255,255,0.015) }
+.comp-row:hover { background: rgba(75,159,250,0.04) }
+.comp-row span:first-child { color: var(--text-dim) }
+.comp-row .v7 { font-family: 'Share Tech Mono', monospace; color: var(--blue); text-align: right }
+.comp-row .v8 { font-family: 'Share Tech Mono', monospace; color: var(--gold); text-align: right }
+.comp-row .gain { font-family: 'Share Tech Mono', monospace; text-align: right }
+.comp-row.bold-row span:first-child { font-weight: 700; color: var(--text) }
+.comp-row.bold-row .v7,.comp-row.bold-row .v8,.comp-row.bold-row .gain { font-weight: 700 }
+
+/* ── GAIN BADGE ── */
+.gain-badge {
+  margin: 10px 12px;
+  background: linear-gradient(135deg, #1A4A9F 0%, #6B2080 50%, #9B2040 100%);
+  border-radius: var(--r-xl);
+  padding: 20px 16px;
+  text-align: center;
+  box-shadow: 0 8px 40px rgba(107,32,128,0.45), inset 0 1px 0 rgba(255,255,255,0.1);
+  position: relative;
+  overflow: hidden;
+}
+.gain-badge::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: -50%;
+  width: 200%; height: 200%;
+  background: radial-gradient(circle at 30% 30%, rgba(255,255,255,0.05) 0%, transparent 60%);
+  pointer-events: none;
+}
+.gain-badge .gb-title { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.75); letter-spacing: 1px }
+.gain-badge .gb-amount {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 2.4rem; font-weight: 700;
+  color: var(--white); margin: 4px 0;
+  text-shadow: 0 2px 20px rgba(255,255,255,0.3);
+}
+.gain-badge .gb-pct { font-size: 0.88rem; color: rgba(255,255,255,0.8) }
+.gain-divider { height: 1px; background: rgba(255,255,255,0.2); margin: 12px 16px }
+.gain-row { display: flex; justify-content: space-between; padding: 4px 10px; font-size: 0.82rem }
+.gain-row .lbl { color: rgba(255,255,255,0.8) }
+.gain-row .val { font-family: 'Share Tech Mono', monospace; font-weight: 700; color: var(--white) }
+.gain-badge .total-credit {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.6rem; font-weight: 700;
+  color: var(--white); margin-top: 4px;
+  text-shadow: 0 2px 16px rgba(255,255,255,0.3);
+}
+.gain-badge .tc-label { font-size: 0.75rem; font-weight: 700; color: rgba(255,255,255,0.8); letter-spacing: 0.5px }
+
+/* ── VERIFY BOX ── */
+.verify-box {
+  margin: 6px 12px;
+  background: rgba(38,198,218,0.04);
+  border: 1px solid rgba(38,198,218,0.2);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+}
+.verify-box h4 { font-size: 0.8rem; font-weight: 700; color: var(--teal); margin-bottom: 8px }
+.ver-row { display: grid; grid-template-columns: 1.2fr 1fr 2fr; padding: 3px 0; font-size: 0.72rem; border-bottom: 1px solid var(--border) }
+.ver-row .lbl { color: var(--text-dim) }
+.ver-row .val { font-family: 'Share Tech Mono', monospace; color: var(--text); text-align: right }
+.ver-row .note { color: var(--text-muted); font-size: 0.68rem; padding-left: 6px }
+.ver-row.net .lbl,.ver-row.net .val { color: var(--grn); font-weight: 700 }
+.ver-row.gross .lbl,.ver-row.gross .val { color: var(--gold); font-weight: 700 }
+
+/* ── ANALYTICS ── */
+.analytics-section {
+  margin: 8px 12px;
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid rgba(167,139,250,0.15);
+  box-shadow: var(--shadow-md);
+}
+.analytics-header {
+  background: linear-gradient(135deg, #0D1A40, #1A0830);
+  padding: 13px 14px;
+  display: flex; align-items: center; gap: 8px;
+  border-bottom: 1px solid rgba(167,139,250,0.15);
+}
+.analytics-header span { font-size: 1.1rem }
+.analytics-header h3 { font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; color: var(--purple); letter-spacing: 1px; margin: 0 }
+.analytics-header small { font-size: 0.68rem; color: var(--text-muted); margin-left: auto }
+.chart-tabs { display: flex; flex-wrap: wrap; background: rgba(0,0,0,0.25); border-bottom: 1px solid var(--border) }
+.chart-tab {
+  flex: 1; min-width: 0; padding: 8px 2px;
+  background: none; border: none; color: var(--text-muted);
+  font-size: 0.67rem; font-family: 'Exo 2', sans-serif;
+  cursor: pointer; border-bottom: 2px solid transparent;
+  transition: all var(--t-med); letter-spacing: 0.2px; text-align: center;
+}
+.chart-tab.active { color: var(--purple); border-bottom-color: var(--purple); background: rgba(167,139,250,0.04) }
+.chart-tab:hover:not(.active) { color: var(--text) }
+.chart-panel { padding: 12px 10px 8px }
+.chart-legend { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 10px; padding: 0 2px }
+.legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.7rem; color: var(--text-dim) }
+.legend-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0 }
+.donut-pair { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; align-items: center }
+.donut-item { display: flex; flex-direction: column; align-items: center; gap: 4px; position: relative }
+.donut-tip {
+  background: var(--bg-card);
+  border: 1px solid var(--border-md); border-radius: var(--r-md);
+  padding: 7px 12px; font-size: 0.75rem; text-align: center;
+  min-width: 90px; margin-top: 2px; display: none;
+  box-shadow: var(--shadow-md);
+}
+.donut-tip.visible { display: block; animation: fadeUp 0.2s ease }
+.donut-label { font-family: 'Rajdhani', sans-serif; font-size: 0.82rem; font-weight: 700; letter-spacing: 0.5px }
+.chart-subtitle { font-size: 0.68rem; color: var(--text-muted); text-align: center; margin-bottom: 6px }
+
+/* ── DISCLAIMER ── */
+.disclaimer {
+  margin: 6px 12px 8px;
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  text-align: center;
+  line-height: 1.6;
+}
+
+/* ── ANIMATIONS ── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.6} }
+#output > * { animation: fadeUp 0.3s ease both }
+#output > *:nth-child(1){animation-delay:.05s}
+#output > *:nth-child(2){animation-delay:.1s}
+#output > *:nth-child(3){animation-delay:.15s}
+#output > *:nth-child(4){animation-delay:.2s}
+#output > *:nth-child(5){animation-delay:.25s}
+#output > *:nth-child(6){animation-delay:.3s}
+#output > *:nth-child(7){animation-delay:.35s}
+
+/* ═══════════════════════════════════════
+   COMMENT SYSTEM
+   ═══════════════════════════════════════ */
+.comments-section {
+  max-width: 100%;
+  margin: 0;
+  padding: 20px 14px 28px;
+  background: linear-gradient(180deg, var(--bg-base) 0%, var(--bg-deep) 100%);
+  border-top: 1px solid var(--border);
+}
+.comments-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.comments-header-icon {
+  width: 38px; height: 38px;
+  background: linear-gradient(135deg, rgba(75,159,250,0.2), rgba(167,139,250,0.2));
+  border: 1px solid rgba(75,159,250,0.2);
+  border-radius: var(--r-md);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.1rem;
+}
+.comments-header h2 {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1.15rem; font-weight: 700;
+  color: var(--white); letter-spacing: 0.5px;
+}
+.comments-header p { font-size: 0.72rem; color: var(--text-muted) }
+.comment-count-badge {
+  margin-left: auto;
+  background: rgba(75,159,250,0.1);
+  border: 1px solid rgba(75,159,250,0.2);
+  color: var(--blue);
+  font-size: 0.72rem; font-weight: 700;
+  padding: 3px 10px; border-radius: 14px;
+}
+
+/* Comment Form */
+.comment-form {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 16px;
+  margin-bottom: 18px;
+  transition: border-color var(--t-med);
+}
+.comment-form:focus-within { border-color: rgba(75,159,250,0.3) }
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px }
+.form-group { display: flex; flex-direction: column; gap: 5px }
+.form-group label {
+  font-size: 0.7rem; font-weight: 700;
+  color: var(--text-muted); letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+.form-input {
+  background: var(--bg-input);
+  color: var(--white);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-sm);
+  padding: 9px 12px;
+  font-size: 0.88rem;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--t-fast), box-shadow var(--t-fast);
+}
+.form-input:focus {
+  border-color: rgba(75,159,250,0.5);
+  box-shadow: 0 0 0 3px rgba(75,159,250,0.06);
+}
+.form-input.error { border-color: rgba(244,63,94,0.5) !important }
+.form-error {
+  font-size: 0.66rem;
+  color: var(--red);
+  display: none;
+}
+.form-error.show { display: block }
+
+textarea.form-input {
+  resize: vertical;
+  min-height: 80px;
+  line-height: 1.5;
+}
+.form-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+}
+.char-count { font-size: 0.68rem; color: var(--text-muted) }
+.char-count.warn { color: var(--warn) }
+.char-count.over { color: var(--red) }
+.submit-btn {
+  background: linear-gradient(135deg, #1A4A9F, #6B2080);
+  color: var(--white);
+  border: none;
+  border-radius: var(--r-md);
+  padding: 10px 22px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  display: flex; align-items: center; gap: 6px;
+  transition: all var(--t-fast);
+  box-shadow: 0 3px 12px rgba(107,32,128,0.3);
+}
+.submit-btn:hover { transform: translateY(-1px); box-shadow: 0 5px 20px rgba(107,32,128,0.5) }
+.submit-btn:active { transform: translateY(0) }
+.submit-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none }
+.submit-btn .btn-spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  display: none;
+}
+@keyframes spin { to{transform:rotate(360deg)} }
+
+/* Comments List */
+.comments-list { display: flex; flex-direction: column; gap: 12px }
+.comment-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--r-lg);
+  padding: 14px;
+  transition: border-color var(--t-fast), transform var(--t-fast);
+  animation: fadeUp 0.3s ease both;
+}
+.comment-card:hover { border-color: var(--border-md); transform: translateY(-1px) }
+.comment-meta {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.avatar {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.88rem;
+  flex-shrink: 0;
+  font-family: 'Rajdhani', sans-serif;
+  border: 2px solid rgba(255,255,255,0.1);
+}
+.comment-info { flex: 1 }
+.comment-author { font-weight: 700; font-size: 0.85rem; color: var(--white) }
+.comment-time {
+  font-size: 0.65rem; color: var(--text-muted);
+  display: flex; align-items: center; gap: 4px;
+}
+.comment-body { font-size: 0.82rem; color: var(--text-dim); line-height: 1.65; margin-bottom: 10px }
+.comment-actions { display: flex; align-items: center; gap: 8px }
+.action-btn {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 4px 10px;
+  font-size: 0.72rem; color: var(--text-muted);
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  transition: all var(--t-fast);
+}
+.action-btn:hover { background: rgba(255,255,255,0.08); color: var(--text); border-color: var(--border-hi) }
+.action-btn.liked { color: var(--red); border-color: rgba(244,63,94,0.3); background: rgba(244,63,94,0.06) }
+.action-btn.liked .like-icon { color: var(--red) }
+.like-count { font-weight: 700 }
+
+/* Reply area */
+.reply-area {
+  display: none;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.reply-area.open { display: block }
+.reply-input {
+  background: var(--bg-input);
+  color: var(--white);
+  border: 1px solid var(--border-md);
+  border-radius: var(--r-sm);
+  padding: 8px 12px;
+  font-size: 0.82rem;
+  font-family: 'Exo 2', sans-serif;
+  outline: none;
+  width: 100%;
+  transition: border-color var(--t-fast);
+  margin-bottom: 8px;
+  resize: none;
+  min-height: 60px;
+}
+.reply-input:focus { border-color: rgba(75,159,250,0.4) }
+.reply-submit {
+  background: rgba(75,159,250,0.12);
+  color: var(--blue);
+  border: 1px solid rgba(75,159,250,0.25);
+  border-radius: var(--r-sm);
+  padding: 6px 14px;
+  font-size: 0.78rem; font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  cursor: pointer;
+  transition: all var(--t-fast);
+}
+.reply-submit:hover { background: rgba(75,159,250,0.22) }
+
+/* Replies */
+.replies-list { margin-top: 10px; display: flex; flex-direction: column; gap: 8px }
+.reply-card {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 10px 12px;
+  padding-left: 14px;
+  border-left: 2px solid rgba(75,159,250,0.3);
+}
+.reply-meta { display: flex; align-items: center; gap: 8px; margin-bottom: 5px }
+.reply-avatar {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  font-weight: 700; font-size: 0.7rem;
+  flex-shrink: 0;
+  font-family: 'Rajdhani', sans-serif;
+}
+.reply-author { font-weight: 700; font-size: 0.78rem; color: var(--text) }
+.reply-time { font-size: 0.62rem; color: var(--text-muted); margin-left: auto }
+.reply-body { font-size: 0.78rem; color: var(--text-dim); line-height: 1.55 }
+
+/* Empty state */
+.comments-empty {
+  text-align: center;
+  padding: 30px 20px;
+  color: var(--text-muted);
+}
+.comments-empty .empty-icon { font-size: 2.5rem; margin-bottom: 10px; opacity: 0.5 }
+.comments-empty p { font-size: 0.82rem }
+
+/* Sort controls */
+.comments-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.comments-toolbar h3 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 0.3px;
+}
+.sort-btns { display: flex; gap: 4px }
+.sort-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--r-sm);
+  padding: 4px 10px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: 'Exo 2', sans-serif;
+  transition: all var(--t-fast);
+  font-weight: 600;
+}
+.sort-btn:hover { color: var(--text); background: rgba(255,255,255,0.08) }
+.sort-btn.active { background: rgba(75,159,250,0.1); color: var(--blue); border-color: rgba(75,159,250,0.25) }
+
+/* ═══════════════════════════════════════
+   PREMIUM FOOTER
+   ═══════════════════════════════════════ */
+.footer {
+  background: var(--bg-deep);
+  border-top: 1px solid var(--border);
+  padding: 20px 16px;
+  text-align: center;
+}
+.footer-logo {
+  font-family: 'Rajdhani', sans-serif;
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+.footer-logo span { color: var(--blue) }
+.footer-links {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin: 10px 0;
+  flex-wrap: wrap;
+}
+.footer-link {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  transition: color var(--t-fast);
+  display: flex; align-items: center; gap: 4px;
+}
+.footer-link:hover { color: var(--blue) }
+.footer-disclaimer {
+  font-size: 0.66rem;
+  color: var(--text-muted);
+  line-height: 1.6;
+  max-width: 420px;
+  margin: 8px auto 0;
+}
+.footer-copy {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  margin-top: 10px;
+  opacity: 0.6;
+}
+
+/* ── PRINT STYLES ── */
+@media print {
+  body { background: #fff !important; color: #000 !important; font-size: 12px }
+  .header { background: #1a3a8f !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .flag-bar { background: linear-gradient(90deg, #FF9933 33%,#fff 33%,#fff 66%,#138808 66%) !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .slide-topbar, .slide-nav, .zoom-controls, .calc-btn, .pm-box,
+  .ppt-slide:not(.active), #slide-calc, .toast, .comments-section, .footer { display: none !important }
+  #output { display: block !important }
+  .ppt-slide { display: block !important; page-break-inside: avoid }
+  .gain-badge { background: #1a3a8f !important; color: #fff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact; border-radius: 8px }
+  .comp-table { border: 1px solid #ccc !important }
+  .comp-row:nth-child(even) { background: #f0f4ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .comp-head { background: #e0e8ff !important; -webkit-print-color-adjust: exact; print-color-adjust: exact }
+  .slip { border: 1px solid #ccc !important }
+  .analytics-section { display: none !important }
+  a[href]:after { content: none !important }
+  button[onclick="shareWhatsApp()"], button[onclick="printResult()"] { display: none !important }
+}
+
+/* ── RESPONSIVE ── */
+@media (max-width: 400px) {
+  .form-row { grid-template-columns: 1fr }
+  .slips-row { grid-template-columns: 1fr 1fr }
+  .comp-head { grid-template-columns: 1.6fr 1fr 1fr 0.8fr }
+  .comp-row { grid-template-columns: 1.6fr 1fr 1fr 0.8fr }
+  .gain-badge .gb-amount { font-size: 1.9rem }
+}
+
+/* ══ ADMIN PANEL ══ */
+#admin-panel {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.85);
+  z-index: 9999;
+  overflow-y: auto;
+  padding: 20px 12px;
+}
+.admin-box {
+  background: var(--bg-card);
+  border: 1px solid rgba(232,169,54,0.3);
+  border-radius: var(--r-lg);
+  max-width: 560px;
+  margin: 0 auto;
+  padding: 20px;
+}
+.admin-box h2 {
+  color: var(--gold);
+  font-size: 1.1rem;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.admin-box .admin-subtitle {
+  color: var(--text-muted);
+  font-size: 0.72rem;
+  margin-bottom: 16px;
+}
+.admin-close-btn {
+  float: right;
+  background: rgba(244,63,94,0.15);
+  border: 1px solid rgba(244,63,94,0.3);
+  color: var(--red);
+  border-radius: var(--r-sm);
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-top: -4px;
+}
+.admin-refresh-btn {
+  background: rgba(75,159,250,0.12);
+  border: 1px solid rgba(75,159,250,0.25);
+  color: var(--blue);
+  border-radius: var(--r-sm);
+  padding: 6px 14px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  margin-right: 8px;
+}
+.admin-comment-card {
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--r-md);
+  padding: 12px 14px;
+  margin-bottom: 10px;
+  transition: var(--t-fast);
+}
+.admin-comment-meta {
+  font-size: 0.8rem;
+  color: var(--text);
+  margin-bottom: 6px;
+}
+.admin-comment-body {
+  font-size: 0.82rem;
+  color: var(--text-dim);
+  line-height: 1.55;
+  margin-bottom: 10px;
+  word-break: break-word;
+}
+.admin-comment-actions { display: flex; gap: 8px }
+.admin-approve-btn {
+  background: rgba(34,197,94,0.15);
+  border: 1px solid rgba(34,197,94,0.35);
+  color: var(--grn);
+  border-radius: var(--r-sm);
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.admin-reject-btn {
+  background: rgba(244,63,94,0.12);
+  border: 1px solid rgba(244,63,94,0.3);
+  color: var(--red);
+  border-radius: var(--r-sm);
+  padding: 5px 14px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.admin-approve-btn:hover { background: rgba(34,197,94,0.25) }
+.admin-reject-btn:hover  { background: rgba(244,63,94,0.22) }
+#admin-pending-list { margin-top: 14px }
+.admin-tabs {
+  display: flex;
+  gap: 8px;
+  margin-top: 14px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+}
+.admin-tab {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-bottom: none;
+  color: var(--text-dim);
+  border-radius: var(--r-sm) var(--r-sm) 0 0;
+  padding: 7px 16px;
+  font-size: 0.78rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: var(--t-fast);
+}
+.admin-tab.active {
+  background: var(--bg-input);
+  color: var(--white);
+  border-color: var(--border-md);
+}
+.admin-tab-badge {
+  background: rgba(251,146,60,0.2);
+  color: var(--warn);
+  border-radius: 10px;
+  padding: 1px 7px;
+  font-size: 0.7rem;
+  font-weight: 700;
+}
+.admin-tab-badge.approved {
+  background: rgba(34,197,94,0.15);
+  color: var(--grn);
+}
+</style>
+</head>
+<body>
+
+<!-- ══ FLAG BAR + HEADER ══ -->
+<div class="flag-bar"></div>
+<div class="header">
+  <div class="header-badge">
+    <i class="fa-solid fa-building-columns"></i>
+    GOVERNMENT OF INDIA — PAY REVISION TOOL
+  </div>
+  <h1>8th PAY COMMISSION CALCULATOR &nbsp;v3.3</h1>
+  <div class="header-sub">
+    <span class="header-pill gold"><i class="fa-solid fa-calculator"></i>&nbsp;Fitment 3.833</span>
+    <span class="header-pill green"><i class="fa-solid fa-circle-check"></i>&nbsp;DA 60% Cabinet Approved 18-Apr-2026</span>
+    <span class="header-pill blue"><i class="fa-solid fa-file-invoice-dollar"></i>&nbsp;Payslip-Verified</span>
+  </div>
+</div>
+
+<!-- ══ TOGGLE SCRIPTS ══ -->
+<script>
+function toggleInfo() {
+  const panel = document.getElementById("info-panel");
+  const arrow = document.getElementById("info-arrow");
+  const btn   = document.getElementById("info-toggle-btn");
+  const open  = panel.style.display === "block";
+  panel.style.display = open ? "none" : "block";
+  arrow.style.transform = open ? "rotate(0deg)" : "rotate(180deg)";
+  btn.style.borderColor = open ? "rgba(255,255,255,0.06)" : "var(--teal)";
+}
+function toggleVerify() {
+  const panel = document.getElementById("verify-panel");
+  const arrow = document.getElementById("verify-arrow");
+  const btn   = document.getElementById("verify-btn");
+  if (!panel) return;
+  const open  = panel.style.display === "block";
+  panel.style.display = open ? "none" : "block";
+  arrow.style.transform = open ? "rotate(0deg)" : "rotate(180deg)";
+  btn.style.borderColor = open ? "rgba(38,198,218,0.25)" : "var(--teal)";
+}
+</script>
+
+<!-- ══ ZOOM CONTROLS SCRIPT ══ -->
+<script>
+let _zoom = 1.0;
+const ZOOM_STEP = 0.15, ZOOM_MIN = 0.6, ZOOM_MAX = 2.5;
+function applyZoom(){
+  const wrap = document.getElementById('slideshow-wrap');
+  wrap.style.transform = 'scale(' + _zoom + ')';
+  wrap.style.transformOrigin = 'top center';
+  wrap.style.marginBottom = (_zoom < 1) ? ((_zoom - 1) * wrap.offsetHeight) + 'px' : '0';
+  document.querySelectorAll('.zoom-level').forEach(el => el.textContent = Math.round(_zoom * 100) + '%');
+}
+function zoomIn()   { _zoom = Math.min(_zoom + ZOOM_STEP, ZOOM_MAX); applyZoom(); }
+function zoomOut()  { _zoom = Math.max(_zoom - ZOOM_STEP, ZOOM_MIN); applyZoom(); }
+function zoomReset(){ _zoom = 1.0; applyZoom(); }
+</script>
+
+<!-- ══ SLIDESHOW WRAP ══ -->
+<div id="slideshow-wrap">
+
+<!-- ══ SLIDE 1: CALCULATOR ══ -->
+<div class="ppt-slide active" id="slide-calc">
+
+  <div class="slide-topbar">
+    <span class="slide-title"><i class="fa-solid fa-calculator" style="font-size:0.82rem"></i>&nbsp; Calculator</span>
+    <div style="display:flex;align-items:center;gap:8px">
+      <div class="zoom-controls">
+        <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+        <span class="zoom-level">100%</span>
+        <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
+        <button class="zoom-btn" onclick="zoomReset()" title="Reset Zoom" style="font-size:.65rem;width:36px;color:var(--text-muted)">RST</button>
+        <button onclick="resetForm()" title="Reset All Inputs"
+          style="background:rgba(244,63,94,0.08);color:var(--red);border:1px solid rgba(244,63,94,0.25);border-radius:var(--r-sm);padding:4px 10px;font-size:.7rem;cursor:pointer;font-family:'Exo 2',sans-serif;margin-left:4px;transition:all 0.15s"
+          onmouseover="this.style.background='rgba(244,63,94,0.16)'" onmouseout="this.style.background='rgba(244,63,94,0.08)'">
+          <i class="fa-solid fa-rotate-left"></i>&nbsp;Reset
+        </button>
+      </div>
+      <span class="slide-counter" id="input-counter">Fill in details &amp; Calculate</span>
+    </div>
+  </div>
+
+  <div class="input-card">
+
+    <!-- ★ PAY MATRIX SELECTOR ★ -->
+    <div class="pm-box">
+      <div class="pm-header" onclick="togglePM()">
+        <span><i class="fa-solid fa-table-cells" style="font-size:0.8rem;opacity:0.8"></i>&nbsp;
+          Pay Matrix Selector &nbsp;<small style="opacity:.65;font-size:.72rem">(7th CPC — Level &amp; Index se Basic auto-fill)</small>
+        </span>
+        <span id="pm-arrow" style="font-size:0.9rem;transition:transform .25s;color:var(--teal)">▼</span>
+      </div>
+      <div id="pm-body" style="display:none;padding:10px 12px 6px">
+        <div class="field-note" style="margin-bottom:8px">Level select karo → phir cell (Index) select karo → Basic Pay + Level auto-set</div>
+        <div style="font-size:.7rem;color:var(--text-muted);margin-bottom:4px;font-weight:700;letter-spacing:.4px">LEVEL</div>
+        <div class="pm-lvl-row" id="pm-lvl-row"></div>
+        <div id="pm-lvl-info" style="display:none;margin:8px 0 4px;font-size:.72rem;color:var(--teal)"></div>
+        <div style="font-size:.7rem;color:var(--text-muted);margin-bottom:4px;font-weight:700;letter-spacing:.4px" id="pm-idx-label">INDEX → BASIC PAY</div>
+        <div class="pm-cell-grid" id="pm-cell-grid"></div>
+        <div id="pm-selected" style="display:none;margin-top:8px;padding:8px 12px;background:rgba(38,198,218,0.05);border-radius:var(--r-sm);border:1px solid rgba(38,198,218,0.25);font-size:.8rem;color:var(--teal);text-align:center"></div>
+      </div>
+    </div>
+
+    <!-- Basic Pay -->
+    <label class="field-label" style="margin-top:6px">
+      <i class="fa-solid fa-indian-rupee-sign" style="color:var(--gold);font-size:0.78rem"></i>&nbsp;
+      Current Basic Pay (7th CPC) ₹
+    </label>
+    <input type="number" id="basic" value="24500" min="18000" inputmode="numeric"/>
+
+    <!-- Fitment Factor -->
+    <div class="fitment-box">
+      <h4><i class="fa-solid fa-sliders" style="font-size:0.78rem"></i>&nbsp; Fitment Factor (8th CPC)</h4>
+      <div class="sub-note">NCJCM demand = <b style="color:var(--white)">3.833</b>&nbsp;|&nbsp; Possible range: 1.50 – 4.50<br/>
+        Change karke dekho alag-alag scenarios</div>
+      <div class="fitment-row">
+        <input type="number" id="fitment" value="3.833" min="1.5" max="4.5" step="0.001"
+               inputmode="decimal" class="fitment-input"/>
+        <div class="adj-col">
+          <button class="adj-btn" onclick="adjFitment(0.1)">+0.1</button>
+          <button class="adj-btn" onclick="adjFitment(-0.1)">−0.1</button>
+        </div>
+      </div>
+      <div class="ff-presets">
+        <button onclick="setFitment(1.50)"  class="ff-btn">1.50</button>
+        <button onclick="setFitment(2.00)"  class="ff-btn">2.00</button>
+        <button onclick="setFitment(2.57)"  class="ff-btn">2.57 (7th)</button>
+        <button onclick="setFitment(3.00)"  class="ff-btn">3.00</button>
+        <button onclick="setFitment(3.68)"  class="ff-btn">3.68</button>
+        <button onclick="setFitment(3.833)" class="ff-btn" id="ff-ncjcm">3.833 ★</button>
+        <button onclick="setFitment(4.00)"  class="ff-btn">4.00</button>
+        <button onclick="setFitment(4.50)"  class="ff-btn">4.50</button>
+      </div>
+    </div>
+
+    <!-- City / HRA -->
+    <label class="field-label" style="margin-top:8px">
+      <i class="fa-solid fa-city" style="color:var(--teal);font-size:0.78rem"></i>&nbsp;
+      City Category (HRA)
+    </label>
+    <div class="field-note">HRA % auto-changes with DA slab (24/16/8 → 27/18/9 → 30/20/10)</div>
+    <select id="hra">
+      <option value="X">X — Metro (50+ lakh): Delhi, Mumbai, Chennai, Bengaluru, Kolkata, Hyderabad, Pune, Ahmedabad</option>
+      <option value="Y">Y — City (5–50 lakh): State capitals, large cities</option>
+      <option value="Z">Z — Town (&lt;5 lakh): All remaining towns</option>
+    </select>
+
+    <!-- Pay Level -->
+    <label class="field-label" style="margin-top:8px">
+      <i class="fa-solid fa-layer-group" style="color:var(--blue);font-size:0.78rem"></i>&nbsp;
+      Pay Level
+    </label>
+    <select id="level">
+      <option value="auto">Auto Detect</option>
+      <option value="1">Level 1</option>
+      <option value="2">Level 2</option>
+      <option value="3">Level 3</option>
+      <option value="4">Level 4</option>
+      <option value="5">Level 5</option>
+      <option value="6">Level 6</option>
+      <option value="7">Level 7</option>
+      <option value="8">Level 8</option>
+      <option value="9">Level 9</option>
+      <option value="10">Level 10</option>
+      <option value="11">Level 11</option>
+      <option value="12">Level 12</option>
+      <option value="13">Level 13</option>
+      <option value="14">Level 14</option>
+    </select>
+
+    <!-- Current DA (7th CPC) -->
+    <div class="sub-box da7-box">
+      <h4><i class="fa-solid fa-percent" style="font-size:0.78rem"></i>&nbsp; Current DA % (7th CPC)</h4>
+      <div class="sub-note">
+        <b style="color:var(--grn)">✓ Cabinet Approved 18-Apr-2026:</b> DA = <b style="color:var(--white)">60%</b> w.e.f Jan-2026<br/>
+        Jan–Mar 2026 arrears milenge ek saath (3 months)
+      </div>
+      <input type="number" id="da7" value="60" min="0" max="100" inputmode="decimal" oninput="updateHraBadge()"/>
+      <div id="hra7_badge" style="margin-top:7px;padding:6px 10px;border-radius:var(--r-sm);background:rgba(75,159,250,0.06);border:1px solid rgba(75,159,250,0.15);font-size:.72rem;text-align:center;color:var(--blue)"></div>
+    </div>
+
+    <!-- 8th CPC DA -->
+    <div class="sub-box da8-box">
+      <h4><i class="fa-solid fa-percent" style="font-size:0.78rem"></i>&nbsp; DA % at Time of 8th CPC Payment</h4>
+      <div class="sub-note">
+        Default 7% (Jul-2026 +3%, Jan-2027 +4%)<br/>
+        Increase if implementation is further delayed
+      </div>
+      <input type="number" id="da8" value="7" min="0" max="30" inputmode="decimal" oninput="updateHraBadge()"/>
+      <div id="hra8_badge" style="margin-top:7px;padding:6px 10px;border-radius:var(--r-sm);background:rgba(34,197,94,0.06);border:1px solid rgba(34,197,94,0.15);font-size:.72rem;text-align:center;color:var(--grn)"></div>
+    </div>
+
+    <!-- CGEIS -->
+    <div class="sub-box cgeis-box">
+      <h4><i class="fa-solid fa-shield" style="font-size:0.78rem"></i>&nbsp; CGEIS Deductions (7th CPC — Actual Payslip Values)</h4>
+      <div class="sub-note">
+        7th CPC Revised: L1-5 → Insurance ₹30, Savings ₹1500<br/>
+        Old Group D rates: Insurance ₹9, Savings ₹21 (total ₹30)<br/>
+        Enter -1 in both fields to use auto (7th CPC revised rates)
+      </div>
+      <div class="cgeis-row">
+        <div>
+          <label>CGEIS Insurance (₹)</label>
+          <input type="number" id="cgeis_i" value="9" inputmode="numeric"/>
+        </div>
+        <div>
+          <label>CGEIS Savings (₹)</label>
+          <input type="number" id="cgeis_s" value="21" inputmode="numeric"/>
+        </div>
+      </div>
+    </div>
+
+    <!-- DA Arrear Months -->
+    <label class="field-label" style="margin-top:8px">
+      <i class="fa-solid fa-calendar-days" style="color:var(--warn);font-size:0.78rem"></i>&nbsp;
+      7th CPC DA Arrear Months (Jan–Mar 2026)
+    </label>
+    <input type="number" id="arr_months" value="3" min="0" inputmode="numeric"/>
+
+    <!-- Previous DA -->
+    <label class="field-label" style="margin-top:8px">
+      <i class="fa-solid fa-clock-rotate-left" style="color:var(--text-muted);font-size:0.78rem"></i>&nbsp;
+      Previous DA % (before current revision)
+    </label>
+    <div class="field-note">
+      Current DA = 60% → Previous DA = 58% (July 2025 revision)<br/>
+      (Used to compute 7th CPC DA arrears: 2% × 3 months)
+    </div>
+    <input type="number" id="prev_da7" value="58" min="0" max="100" inputmode="decimal"/>
+
+    <button class="calc-btn" onclick="calculate()">
+      <i class="fa-solid fa-bolt"></i>&nbsp; CALCULATE — Results Dekhein
+    </button>
+
+  </div>
+</div><!-- /slide-calc -->
+
+<div id="output"></div>
+
+</div><!-- /slideshow-wrap -->
+
+<div class="toast" id="toast"></div>
+<script>
+// ── CONSTANTS ──────────────────────────────────────────────
+const FITMENT_DEFAULT = 3.833;
+function getFitment() {
+  const v = parseFloat(document.getElementById("fitment")?.value);
+  return (!isNaN(v) && v >= 1.5 && v <= 4.5) ? v : FITMENT_DEFAULT;
+}
+function setFitment(val) {
+  document.getElementById("fitment").value = val;
+}
+function adjFitment(delta) {
+  const cur = parseFloat(document.getElementById("fitment").value) || FITMENT_DEFAULT;
+  document.getElementById("fitment").value = Math.max(1.5, Math.min(4.5, +(cur + delta).toFixed(3)));
+}
+const NPS_EMP   = 0.10;
+const NPS_GOVT  = 0.14;
+
+// HRA slab rates based on DA%
+// DA  0-24%  →  X=24%, Y=16%, Z=8%
+// DA 25-49%  →  X=27%, Y=18%, Z=9%
+// DA 50%+    →  X=30%, Y=20%, Z=10%
+const HRA_SLABS = {
+  X: [ [0, 0.24], [25, 0.27], [50, 0.30] ],
+  Y: [ [0, 0.16], [25, 0.18], [50, 0.20] ],
+  Z: [ [0, 0.08], [25, 0.09], [50, 0.10] ],
+};
+// Minimum HRA (Rs.) — 7th CPC guaranteed minimum
+const HRA_MIN = { X: 5400, Y: 3600, Z: 1800 };
+
+function getHraRate(city, daPct) {
+  const slabs = HRA_SLABS[city];
+  let rate = slabs[0][1];
+  for (const [threshold, r] of slabs) {
+    if (daPct >= threshold) rate = r;
+  }
+  return rate;
+}
+
+function hraSlabLabel(daPct) {
+  if (daPct >= 50) return "DA≥50% Slab";
+  if (daPct >= 25) return "DA≥25% Slab";
+  return "DA<25% Slab";
+}
+
+const TPT_7TH = { "L1-2": 1350, "L3-8": 3600, "L9+": 7200 };
+const TPT_8TH = { "L1-2": 5200, "L3-8": 13800, "L9+": 27600 };
+
+const CGEIS_7TH = {
+  "L1-5": [30, 1500], "L6-9": [60, 3000], "L10+": [120, 6000]
+};
+const CGEIS_8TH = {
+  "L1-5": [115, 5750], "L6-9": [230, 11500], "L10+": [460, 23000]
+};
+
+// Pay Matrix: [entry_pay, max_pay]
+const PAY_MATRIX = {
+  1:  [18000,  56900], 2:  [19900,  63200],
+  3:  [21700,  69100], 4:  [25500,  81100],
+  5:  [29200,  92300], 6:  [35400, 112400],
+  7:  [44900, 142400], 8:  [47600, 151100],
+  9:  [53100, 167800], 10: [56100, 177500],
+  11: [67700, 208700], 12: [78800, 209200],
+  13:[123100, 215900], 14:[144200, 218200]
+};
+
+const DA_TIMELINE = [
+  { date: "01-Jan-2026", pct: "0%",   pctVal: 0,  note: "8th CPC effective, DA resets" },
+  { date: "01-Jul-2026", pct: "~3%",  pctVal: 3,  note: "1st revision on new basic" },
+  { date: "01-Jan-2027", pct: "~6%",  pctVal: 6,  note: "2nd revision on new basic" },
+  { date: "01-Jul-2027", pct: "~9%",  pctVal: 9,  note: "3rd revision (if further delayed)" },
+];
+
+// ── HELPERS ───────────────────────────────────────────────
+function ceil100(v) { return Math.ceil(v / 100) * 100; }
+
+function inr(n) {
+  n = Math.round(n);
+  const neg = n < 0;
+  let s = String(Math.abs(n));
+  if (s.length <= 3) return (neg ? "-" : "") + "₹" + s;
+  let last3 = s.slice(-3), rest = s.slice(0, -3);
+  let parts = [];
+  while (rest.length > 2) { parts.unshift(rest.slice(-2)); rest = rest.slice(0, -2); }
+  if (rest) parts.unshift(rest);
+  return (neg ? "-" : "") + "₹" + parts.join(",") + "," + last3;
+}
+
+function detectLevel(basic) {
+  let result = 1;
+  for (let lvl = 1; lvl <= 14; lvl++) {
+    if (basic >= PAY_MATRIX[lvl][0]) result = lvl;
+    else break;
+  }
+  return result;
+}
+
+function tptGrp(lvl) {
+  return lvl <= 2 ? "L1-2" : lvl <= 8 ? "L3-8" : "L9+";
+}
+function cgeisGrp(lvl) {
+  return lvl <= 5 ? "L1-5" : lvl <= 9 ? "L6-9" : "L10+";
+}
+
+// ── CALC 7TH ──────────────────────────────────────────────
+// city = "X" | "Y" | "Z"
+// HRA auto-determined by DA slab; minimum HRA guaranteed
+function calc7th(basic, city, lvl, da7, ciOv, csOv) {
+  const da      = Math.round(basic * da7 / 100);
+  const hraRate = getHraRate(city, da7);
+  const hraCalc = Math.round(basic * hraRate);
+  // Apply minimum HRA guarantee (7th CPC)
+  const hra     = Math.max(hraCalc, HRA_MIN[city]);
+  let tg        = tptGrp(lvl);
+  let tpt       = TPT_7TH[tg];
+
+  // ★ SPECIAL RULE: Level 1 or Level 2 AND basic > 24000 → TPT = 3600
+  let tptOverride = false;
+  if ((lvl === 1 || lvl === 2) && basic > 24000) {
+    tpt = 3600;
+    tptOverride = true;
+  }
+
+  const tpt_da = Math.round(tpt * da7 / 100);
+  const nb     = basic + da;
+  const nps_e  = Math.round(nb * NPS_EMP);
+  const nps_g  = Math.round(nb * NPS_GOVT);
+  const cg     = cgeisGrp(lvl);
+  const ci     = ciOv >= 0 ? ciOv : CGEIS_7TH[cg][0];
+  const cs     = csOv >= 0 ? csOv : CGEIS_7TH[cg][1];
+  const gross  = basic + da + hra + tpt + tpt_da + nps_g;
+  const deduct = nps_e + nps_g + ci + cs;
+  return { basic, da, hra, hraRate, tpt, tpt_da, nps_g, nps_e, ci, cs,
+           gross, deduct, net: gross - deduct, da_pct: da7,
+           tg, cg, lvl, tptOverride, city };
+}
+
+// ── CALC 8TH ──────────────────────────────────────────────
+// 8th CPC: DA resets to ~0-7%, so HRA slab starts fresh
+function calc8th(basic7, city, lvl, da8, ciOv, csOv) {
+  const fitment  = getFitment();
+  const basic    = ceil100(basic7 * fitment);
+  const da       = Math.round(basic * da8 / 100);
+  const hraRate  = getHraRate(city, da8);     // slab based on 8th CPC DA%
+  const hraCalc  = Math.round(basic * hraRate);
+  // No official 8th CPC HRA minimum yet; use percentage-based (no floor applied)
+  const hra      = hraCalc; // 8th CPC minimums not yet official; percentage-based used
+  const tg       = tptGrp(lvl);
+  const tpt      = TPT_8TH[tg];
+  const tpt_da   = Math.round(tpt * da8 / 100);
+  const nb     = basic + da;
+  const nps_e  = Math.round(nb * NPS_EMP);
+  const nps_g  = Math.round(nb * NPS_GOVT);
+  const cg     = cgeisGrp(lvl);
+  // CGEIS same as 7th CPC (user-entered values, not auto-scaled)
+  const ci     = ciOv >= 0 ? ciOv : CGEIS_7TH[cg][0];
+  const cs     = csOv >= 0 ? csOv : CGEIS_7TH[cg][1];
+  const gross  = basic + da + hra + tpt + tpt_da + nps_g;
+  const deduct = nps_e + nps_g + ci + cs;
+  return { basic, da, hra, hraRate, tpt, tpt_da, nps_g, nps_e, ci, cs,
+           gross, deduct, net: gross - deduct, da_pct: da8, tg, cg, lvl, city };
+}
+
+function calcArrears8th(basic7, da8, months = 18) {
+  const newB = ceil100(basic7 * getFitment());
+  const old7thMonthly = Math.round(basic7 * (1 + 60 / 100)); // 7th CPC basic+DA
+
+  // Stepped DA on 8th CPC new basic (6-month intervals: 0% → 3% → 6% → 9%...)
+  // Each step assumed every 6 months; capped at user-entered da8%
+  const daSteps = [0, 3, 6, 9, 12, 15];
+  let totalNew = 0;
+  for (let m = 0; m < months; m++) {
+    const stepIdx = Math.min(Math.floor(m / 6), daSteps.length - 1);
+    const stepDa  = Math.min(daSteps[stepIdx], da8);
+    totalNew += Math.round(newB * (1 + stepDa / 100));
+  }
+  const totalOld = old7thMonthly * months;
+  return Math.max(0, totalNew - totalOld);
+}
+
+function calcArrears7th(basic, oldDa, newDa, months) {
+  const diff = newDa - oldDa;
+  if (diff <= 0) return 0;
+  return Math.round(basic * diff / 100 * months);
+}
+
+// ── SHOW TOAST ────────────────────────────────────────────
+function showToast(msg) {
+  const t = document.getElementById("toast");
+  t.textContent = msg;
+  t.style.display = "block";
+  setTimeout(() => t.style.display = "none", 3000);
+}
+
+// ── MAIN CALCULATE ────────────────────────────────────────
+function calculate() {
+  // --- Parse inputs ---
+  const basic = parseInt(document.getElementById("basic").value);
+  if (isNaN(basic) || basic < 18000) { showToast("Valid Basic Pay (min ₹18,000) daalen"); return; }
+
+  const city = document.getElementById("hra").value; // "X", "Y", or "Z"
+
+  const lvlSel = document.getElementById("level").value;
+  const lvl = lvlSel === "auto" ? detectLevel(basic) : parseInt(lvlSel);
+
+  const da7 = parseFloat(document.getElementById("da7").value);
+  if (isNaN(da7) || da7 < 0 || da7 > 100) { showToast("Current DA% sahi daalen (0–100)"); return; }
+
+  const da8 = parseFloat(document.getElementById("da8").value);
+  if (isNaN(da8) || da8 < 0 || da8 > 30) { showToast("8th CPC DA% 0–30 ke beech hona chahiye"); return; }
+
+  const arrM    = parseInt(document.getElementById("arr_months").value) || 3;
+  const prevDa7 = parseFloat(document.getElementById("prev_da7").value) || (da7 - 2);
+
+  const ciOv = parseInt(document.getElementById("cgeis_i").value);
+  const csOv = parseInt(document.getElementById("cgeis_s").value);
+
+  // --- Calculate ---
+  const r7     = calc7th(basic, city, lvl, da7, isNaN(ciOv) ? -1 : ciOv, isNaN(csOv) ? -1 : csOv);
+  const r8     = calc8th(basic, city, lvl, da8, isNaN(ciOv) ? -1 : ciOv, isNaN(csOv) ? -1 : csOv);
+  const arr7   = calcArrears7th(basic, prevDa7, da7, arrM);
+  const arr8   = calcArrears8th(basic, da8, 18);
+
+  const diffNet = r8.net - r7.net;
+  const pctG   = (diffNet / r7.net * 100).toFixed(1);
+  const firstCr = r8.net + arr8 + arr7;
+
+  // --- Render ---
+  const out = document.getElementById("output");
+
+  const usedFitment = getFitment();
+
+  // HRA slab labels
+  const cityNames = { X: "X-Metro", Y: "Y-City", Z: "Z-Town" };
+  const hra7Pct   = Math.round(r7.hraRate * 100);
+  const hra8Pct   = Math.round(r8.hraRate * 100);
+  const hraLbl7   = `${cityNames[city]} ${hra7Pct}% (${hraSlabLabel(da7)})`;
+  const hraLbl8   = `${cityNames[city]} ${hra8Pct}% (${hraSlabLabel(da8)})`;
+
+  const ALL_LABELS = [
+    "🧮 Calculator",
+    "📄 Salary Slip",
+    "📊 Comparison",
+    "🎉 Salary Hike",
+    "📈 Analytics"
+  ];
+  const TOTAL = ALL_LABELS.length; // 5
+
+  let html = ``;
+
+  // ── SLIDE 2 (global idx 1): Level Info + Salary Slips ──
+  html += `<div class="ppt-slide" data-slide="1">
+  <div class="slide-topbar">
+    <span class="slide-title">${ALL_LABELS[1]}</span>
+    <span class="slide-counter">2 / ${TOTAL}</span>
+  </div>`;
+
+  // 3. Level info + TPT override badge
+  html += `<div class="level-info">
+    Level: <span>Level ${lvl}${lvlSel === "auto" ? " (Auto)" : ""}</span>
+    &nbsp;|&nbsp; TPT Group: <span>${r7.tg}</span>
+    &nbsp;|&nbsp; CGEIS: <span>${r7.cg}</span>
+    &nbsp;|&nbsp; 7th DA: <span>${da7}%</span>
+    &nbsp;|&nbsp; 8th DA: <span>${da8}%</span>
+    &nbsp;|&nbsp; Fitment: <span style="color:#9c7eff">×${usedFitment}</span><br/>
+    🏠 HRA 7th: <span>${hraLbl7}</span>
+    &nbsp;|&nbsp; HRA 8th: <span>${hraLbl8}</span>
+  </div>`;
+
+  if (r7.tptOverride) {
+    html += `<div class="tpt-override-badge" style="display:block">
+      ⚡ TPT OVERRIDE ACTIVE — Level ${lvl} basic ₹${basic.toLocaleString('en-IN')} &gt; ₹24,000
+      → TPT upgraded to <b>₹3,600</b> (L3-8 rate)
+    </div>`;
+  }
+
+  // 4. Salary Slips
+  html += `<div class="slips-row">`;
+  html += slipHTML("7th CPC", `DA ${da7}% | HRA ${hra7Pct}%`, r7, "#4FC3F7");
+  html += slipHTML("8th CPC", `DA ${da8}% | HRA ${hra8Pct}% | ×${usedFitment}`, r8, "#F0A500");
+  html += `</div>`;  // slips-row
+  html += buildSlideNav(1, TOTAL, ALL_LABELS);
+  html += `</div>`; // ppt-slide 2
+
+  // ── SLIDE 3 (global idx 2): Comparison Table ──
+  html += `<div class="ppt-slide" data-slide="2">
+  <div class="slide-topbar">
+    <span class="slide-title">${ALL_LABELS[2]}</span>
+    <span class="slide-counter">3 / ${TOTAL}</span>
+  </div>`;
+
+  // 5. Comparison Table — show HRA% in label
+  const rows = [
+    { label: "Basic Pay",                v7: r7.basic,           v8: r8.basic,  bold: false },
+    { label: `DA (${da7}%/${da8}%)`,     v7: r7.da,              v8: r8.da,     bold: false },
+    { label: `HRA (${hra7Pct}%→${hra8Pct}%)`, v7: r7.hra,       v8: r8.hra,    bold: false },
+    { label: "TPT (total)",              v7: r7.tpt + r7.tpt_da, v8: r8.tpt + r8.tpt_da, bold: false },
+    { label: "NPS Govt 14%",             v7: r7.nps_g,           v8: r8.nps_g,  bold: false },
+    { label: "Gross",                    v7: r7.gross,            v8: r8.gross,  bold: true  },
+    { label: "NPS Emp 10%",              v7: r7.nps_e,           v8: r8.nps_e,  bold: false },
+    { label: "CGEIS",                    v7: r7.ci + r7.cs,      v8: r8.ci + r8.cs, bold: false },
+    { label: "Deductions",               v7: r7.deduct,          v8: r8.deduct, bold: false },
+    { label: "NET PAY",                  v7: r7.net,             v8: r8.net,    bold: true  },
+  ];
+
+  html += `<div class="comp-table">
+    <div class="comp-title">COMPONENT COMPARISON</div>
+    <div class="comp-head">
+      <span>Component</span><span>7th CPC</span><span>8th CPC</span><span>Gain</span>
+    </div>`;
+
+  for (const r of rows) {
+    const diff = r.v8 - r.v7;
+    const gainColor = diff >= 0 ? "var(--grn)" : "var(--red)";
+    const gainStr = (diff >= 0 ? "+" : "") + inr(diff);
+    html += `<div class="comp-row${r.bold ? " bold-row" : ""}">
+      <span>${r.label}</span>
+      <span class="v7">${inr(r.v7)}</span>
+      <span class="v8">${inr(r.v8)}</span>
+      <span class="gain" style="color:${gainColor}">${gainStr}</span>
+    </div>`;
+  }
+  html += `</div>`;  // comp-table
+  html += buildSlideNav(2, TOTAL, ALL_LABELS);
+  html += `</div>`; // ppt-slide 3
+
+  // ── SLIDE 4 (global idx 3): Gain Badge ──
+  html += `<div class="ppt-slide" data-slide="3">
+  <div class="slide-topbar">
+    <span class="slide-title">${ALL_LABELS[3]}</span>
+    <span class="slide-counter">4 / ${TOTAL}</span>
+  </div>`;
+
+  // 6. Gain Badge
+  html += `<div class="gain-badge">
+    <div class="gb-title">MONTHLY SALARY HIKE</div>
+    <div class="gb-amount">${inr(diffNet)}</div>
+    <div class="gb-pct">(+${pctG}% increase)</div>
+    <div class="gain-divider"></div>
+    <div class="gain-row"><span class="lbl">Annual Hike</span><span class="val">${inr(diffNet * 12)}</span></div>
+    <div class="gain-row"><span class="lbl">8th CPC Arrears (~18 mo)</span><span class="val">${inr(arr8)}</span></div>
+    <div class="gain-row"><span class="lbl">7th CPC DA Arrears</span><span class="val">${inr(arr7)}</span></div>
+    <div class="gain-divider"></div>
+    <div class="tc-label">TOTAL CREDIT (First Month)</div>
+    <div class="total-credit">${inr(firstCr)}</div>
+  </div>`;
+  html += buildSlideNav(3, TOTAL, ALL_LABELS);
+  // Action buttons — WhatsApp share + Print
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:8px 12px 12px">
+    <button onclick="shareWhatsApp()" style="background:linear-gradient(135deg,#075E54,#128C7E);color:#fff;border:none;border-radius:10px;padding:13px 8px;font-size:.92rem;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px #075E5440">
+      <svg width="18" height="18" viewBox="0 0 32 32" fill="#fff"><path d="M16 0C7.163 0 0 7.163 0 16c0 2.824.737 5.469 2.025 7.766L0 32l8.455-2.013A15.93 15.93 0 0016 32c8.837 0 16-7.163 16-16S24.837 0 16 0zm8.09 22.09c-.337.948-1.672 1.735-2.734 1.964-.728.155-1.677.279-4.877-1.048-4.096-1.667-6.74-5.83-6.945-6.1-.198-.271-1.665-2.215-1.665-4.225 0-2.01 1.054-2.997 1.427-3.409.374-.411.816-.514 1.088-.514h.785c.25 0 .588-.094.918.7.337.814 1.145 2.815 1.245 3.02.1.205.166.444.033.713-.133.27-.199.437-.396.673-.199.237-.42.529-.598.711-.199.2-.406.416-.175.816.23.399 1.02 1.68 2.188 2.72 1.503 1.34 2.77 1.754 3.17 1.95.4.198.633.165.867-.099.233-.264.997-1.165 1.264-1.563.266-.398.533-.332.896-.199.364.132 2.31 1.09 2.707 1.287.397.198.663.298.762.463.1.164.1.948-.237 1.896z"/></svg>
+      Share on WhatsApp
+    </button>
+    <button onclick="printResult()" style="background:linear-gradient(135deg,#1a3a8f,#0d1a4f);color:#fff;border:1px solid #4A90E240;border-radius:10px;padding:13px 8px;font-size:.92rem;font-weight:700;font-family:'Rajdhani',sans-serif;letter-spacing:.5px;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;box-shadow:0 4px 16px #4A90E220">
+      🖨️ Print / Save PDF
+    </button>
+  </div>`;
+  html += `</div>`; // ppt-slide 4
+
+  // ── SLIDE 5 (global idx 4): Analytics ──
+  html += `<div class="ppt-slide" data-slide="4">
+  <div class="slide-topbar">
+    <span class="slide-title">${ALL_LABELS[4]}</span>
+    <span class="slide-counter">5 / ${TOTAL}</span>
+  </div>`;
+
+  // 7. Analytics Dashboard
+  html += `<div class="analytics-section">
+    <div class="analytics-header">
+      <span>📊</span>
+  <h3>SALARY ANALYTICS</h3>
+      <small>Power BI Style</small>
+    </div>
+    <div class="chart-tabs">
+      <button class="chart-tab active" onclick="switchTab('donut',this)">🥧 Composition</button>
+      <button class="chart-tab" onclick="switchTab('bar',this)">📊 Components</button>
+      <button class="chart-tab" onclick="switchTab('proj',this)">📈 DA Projection</button>
+      <button class="chart-tab" onclick="switchTab('arrears',this)">💰 Arrears</button>
+      <button class="chart-tab" onclick="switchTab('gain',this)">🚀 % Gain</button>
+    </div>
+    <div id="chart-donut" class="chart-panel">
+      <div class="chart-subtitle">Gross Pay Breakdown — 7th vs 8th CPC</div>
+      <div class="donut-pair">
+        <div class="donut-item">
+          <canvas id="cv-donut7" width="150" height="150"></canvas>
+          <div class="donut-label" style="color:#5BB8FF">7th CPC</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.78rem;color:#5BB8FF">${inr(r7.gross)}</div>
+          <div id="tip-donut7" class="donut-tip"></div>
+        </div>
+        <div class="donut-item">
+          <canvas id="cv-donut8" width="150" height="150"></canvas>
+          <div class="donut-label" style="color:#FF6B9D">8th CPC</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:.78rem;color:#FF6B9D">${inr(r8.gross)}</div>
+          <div id="tip-donut8" class="donut-tip"></div>
+        </div>
+      </div>
+      <div class="chart-legend" id="donut-legend"></div>
+    </div>
+    <div id="chart-bar" class="chart-panel" style="display:none">
+      <div class="chart-subtitle">Component-wise Comparison (₹)</div>
+      <canvas id="cv-bar" height="220"></canvas>
+    </div>
+    <div id="chart-proj" class="chart-panel" style="display:none">
+      <div class="chart-subtitle">Net Pay at Different DA% (8th CPC)</div>
+      <canvas id="cv-proj" height="180"></canvas>
+    </div>
+    <div id="chart-arrears" class="chart-panel" style="display:none">
+      <div class="chart-subtitle">Pehle Mahine ka Total Credit Breakdown</div>
+      <canvas id="cv-arrears" height="200"></canvas>
+    </div>
+    <div id="chart-gain" class="chart-panel" style="display:none">
+      <div class="chart-subtitle">Component-wise % Increase (7th → 8th CPC)</div>
+      <canvas id="cv-gain" height="220"></canvas>
+    </div>
+  </div>`;  // analytics-section
+  html += buildSlideNav(4, TOTAL, ALL_LABELS);
+  html += `</div>`; // ppt-slide 5
+
+  // Store chart data
+  window._chartData = {
+    r7, r8,
+    basic, city, lvl, usedFitment,
+    da7, da8,
+    arr7, arr8, firstCr, diffNet
+  };
+
+  out.innerHTML = html;
+  window._currentSlide = 0;
+
+  // Update input slide counter
+  const ic = document.getElementById('input-counter');
+  if (ic) ic.textContent = `1 / ${TOTAL}`;
+
+  setTimeout(() => { drawAllCharts(); }, 80);
+
+  // Jump to slide 2 (Salary Slip)
+  setTimeout(() => goToSlide(1), 60);
+}
+
+// ── RESET FORM ────────────────────────────────────────────
+function resetForm() {
+  document.getElementById("basic").value    = "24500";
+  document.getElementById("fitment").value  = "3.833";
+  document.getElementById("hra").value      = "X";
+  document.getElementById("level").value    = "auto";
+  document.getElementById("da7").value      = "60";
+  document.getElementById("da8").value      = "7";
+  document.getElementById("arr_months").value = "3";
+  document.getElementById("prev_da7").value = "58";
+  document.getElementById("cgeis_i").value  = "9";
+  document.getElementById("cgeis_s").value  = "21";
+  document.getElementById("output").innerHTML = "";
+  document.getElementById("input-counter").textContent = "Fill in details & Calculate";
+  pmSelectedLvl = null; pmSelectedIdx = null;
+  updateHraBadge();
+  showToast("✓ Form reset ho gaya!");
+}
+
+// ── WHATSAPP SHARE ────────────────────────────────────────
+function shareWhatsApp() {
+  const d = window._chartData;
+  if (!d) { showToast("Pehle Calculate karein!"); return; }
+  const { r7, r8, usedFitment, da7, da8, arr7, arr8, firstCr, diffNet, basic } = d;
+  const pctG = (diffNet / r7.net * 100).toFixed(1);
+  const msg =
+`🇮🇳 *8th Pay Commission Calculator*
+━━━━━━━━━━━━━━━━━━
+📋 *Aapki Details*
+Basic Pay (7th): ${inr(basic)}
+Fitment Factor: ×${usedFitment}
+City: ${d.city} | Level: ${d.lvl}
+
+💰 *7th CPC Net Pay:* ${inr(r7.net)}
+💰 *8th CPC Net Pay:* ${inr(r8.net)}
+
+📈 *Monthly Hike: ${inr(diffNet)} (+${pctG}%)*
+📅 Annual Hike: ${inr(diffNet * 12)}
+━━━━━━━━━━━━━━━━━━
+🎉 *Pehle Mahine ka Credit*
+8th CPC Arrears: ${inr(arr8)}
+7th CPC DA Arrears: ${inr(arr7)}
+New Month Net: ${inr(r8.net)}
+💵 *TOTAL: ${inr(firstCr)}*
+━━━━━━━━━━━━━━━━━━
+🔗 Calculated via 8th Pay Commission Calculator`;
+
+  const url = "https://wa.me/?text=" + encodeURIComponent(msg);
+  window.open(url, "_blank");
+}
+
+// ── PRINT / PDF ───────────────────────────────────────────
+function printResult() {
+  if (!window._chartData) { showToast("Pehle Calculate karein!"); return; }
+  const d = window._chartData;
+  const { r7, r8, usedFitment, da7, da8, arr7, arr8, firstCr, diffNet, basic, city, lvl } = d;
+  const pctG = (diffNet / r7.net * 100).toFixed(1);
+  const inrP = (n) => {
+    n = Math.round(n);
+    const neg = n < 0; let s = String(Math.abs(n));
+    if (s.length <= 3) return (neg?"-":"") + "₹" + s;
+    let last3 = s.slice(-3), rest = s.slice(0,-3), parts = [];
+    while (rest.length > 2) { parts.unshift(rest.slice(-2)); rest = rest.slice(0,-2); }
+    if (rest) parts.unshift(rest);
+    return (neg?"-":"") + "₹" + parts.join(",") + "," + last3;
+  };
+  const cityNames = { X:"X-Metro", Y:"Y-City", Z:"Z-Town" };
+  const hra7Pct = Math.round(r7.hraRate * 100);
+  const hra8Pct = Math.round(r8.hraRate * 100);
+
+  const rows7 = [["Basic", r7.basic],["DA "+da7+"%", r7.da],["HRA", r7.hra],["TPT", r7.tpt],["TPT DA", r7.tpt_da],["NPS Govt", r7.nps_g]];
+  const rows8 = [["Basic", r8.basic],["DA "+da8+"%", r8.da],["HRA", r8.hra],["TPT", r8.tpt],["TPT DA", r8.tpt_da],["NPS Govt", r8.nps_g]];
+  const ded7  = [["NPS Emp", r7.nps_e],["NPS Govt", r7.nps_g],["CGEIS-I", r7.ci],["CGEIS-S", r7.cs]];
+  const ded8  = [["NPS Emp", r8.nps_e],["NPS Govt", r8.nps_g],["CGEIS-I", r8.ci],["CGEIS-S", r8.cs]];
+  const slipRow = (k,v) => `<tr><td>${k}</td><td style="text-align:right;font-family:monospace">${inrP(v)}</td></tr>`;
+
+  const printHTML = `<!DOCTYPE html><html><head><meta charset="UTF-8"/>
+  <title>8th Pay Commission — Salary Report</title>
+  <style>
+    body{font-family:Arial,sans-serif;font-size:13px;color:#111;margin:24px;background:#fff}
+    h1{font-size:1.2rem;text-align:center;color:#1a3a8f;margin-bottom:4px}
+    .sub{text-align:center;font-size:.75rem;color:#555;margin-bottom:16px}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+    .card{border:1px solid #ccc;border-radius:8px;overflow:hidden}
+    .card-head{background:#1a3a8f;color:#fff;padding:7px 10px;font-weight:700;font-size:.82rem;text-align:center}
+    .card-head.gold{background:#C0392B}
+    table{width:100%;border-collapse:collapse}
+    td{padding:4px 8px;border-bottom:1px solid #eee;font-size:.8rem}
+    .sec{background:#e8edf8;font-weight:700;padding:4px 8px;font-size:.75rem}
+    .sec.red{background:#fde8e8}
+    .total{font-weight:700;border-top:2px solid #ccc}
+    .hike-box{background:linear-gradient(135deg,#1a3a8f,#9b1a2a);color:#fff;border-radius:8px;padding:16px;text-align:center;margin-bottom:16px}
+    .hike-box h2{font-size:1.8rem;margin:4px 0}
+    .hike-rows{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin-top:10px;text-align:left}
+    .hike-row{display:flex;justify-content:space-between;padding:3px 0;font-size:.82rem;border-bottom:1px solid rgba(255,255,255,.2)}
+    .hike-total{font-size:1.3rem;font-weight:700;margin-top:8px}
+    .foot{font-size:.68rem;color:#888;text-align:center;margin-top:16px;border-top:1px solid #eee;padding-top:8px}
+    @media print{body{margin:12px}.hike-box{-webkit-print-color-adjust:exact;print-color-adjust:exact}.card-head{-webkit-print-color-adjust:exact;print-color-adjust:exact}}
+  </style></head><body>
+  <h1>8th Pay Commission — Salary Report</h1>
+  <div class="sub">Basic ₹${basic.toLocaleString('en-IN')} | Fitment ×${usedFitment} | ${cityNames[city]} | Level ${lvl} | Generated ${new Date().toLocaleDateString('en-IN')}</div>
+
+  <div class="hike-box">
+    <div style="font-size:.8rem;opacity:.9">MONTHLY SALARY HIKE</div>
+    <h2>${inrP(diffNet)}</h2>
+    <div style="opacity:.85">(+${pctG}% increase)</div>
+    <div class="hike-rows">
+      <div class="hike-row"><span>Annual Hike</span><span>${inrP(diffNet*12)}</span></div>
+      <div class="hike-row"><span>8th Arrears (~18 mo)</span><span>${inrP(arr8)}</span></div>
+      <div class="hike-row"><span>7th DA Arrears</span><span>${inrP(arr7)}</span></div>
+      <div class="hike-row"><span>New Month Net</span><span>${inrP(r8.net)}</span></div>
+    </div>
+    <div class="hike-total">TOTAL FIRST MONTH: ${inrP(firstCr)}</div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-head">7th CPC &nbsp;| DA ${da7}% | HRA ${hra7Pct}%</div>
+      <table>
+        <tr><td class="sec" colspan="2">EARNINGS</td></tr>
+        ${rows7.map(([k,v])=>slipRow(k,v)).join('')}
+        <tr><td class="sec red" colspan="2">DEDUCTIONS</td></tr>
+        ${ded7.map(([k,v])=>slipRow(k,v)).join('')}
+        <tr class="total"><td>Gross</td><td style="text-align:right;font-family:monospace">${inrP(r7.gross)}</td></tr>
+        <tr class="total"><td>Deductions</td><td style="text-align:right;font-family:monospace;color:#c00">${inrP(r7.deduct)}</td></tr>
+        <tr class="total"><td><b>NET PAY</b></td><td style="text-align:right;font-family:monospace;color:green"><b>${inrP(r7.net)}</b></td></tr>
+      </table>
+    </div>
+    <div class="card">
+      <div class="card-head gold">8th CPC &nbsp;| DA ${da8}% | HRA ${hra8Pct}% | ×${usedFitment}</div>
+      <table>
+        <tr><td class="sec" colspan="2">EARNINGS</td></tr>
+        ${rows8.map(([k,v])=>slipRow(k,v)).join('')}
+        <tr><td class="sec red" colspan="2">DEDUCTIONS</td></tr>
+        ${ded8.map(([k,v])=>slipRow(k,v)).join('')}
+        <tr class="total"><td>Gross</td><td style="text-align:right;font-family:monospace">${inrP(r8.gross)}</td></tr>
+        <tr class="total"><td>Deductions</td><td style="text-align:right;font-family:monospace;color:#c00">${inrP(r8.deduct)}</td></tr>
+        <tr class="total"><td><b>NET PAY</b></td><td style="text-align:right;font-family:monospace;color:green"><b>${inrP(r8.net)}</b></td></tr>
+      </table>
+    </div>
+  </div>
+  <div class="foot">8th Pay Commission Calculator v3.3 — Disclaimer: Ye estimate hai, actual figures notify hone ke baad update honge.</div>
+  <script>window.onload=function(){window.print();}<\/script>
+  </body></html>`;
+
+  const blob = new Blob([printHTML], { type: 'text/html' });
+  const url  = URL.createObjectURL(blob);
+  const win  = window.open(url, '_blank');
+  if (!win) {
+    // Popup blocked — fallback: direct download
+    const a = document.createElement('a');
+    a.href = url; a.download = '8th_pay_report.html';
+    document.body.appendChild(a); a.click();
+    document.body.removeChild(a);
+    showToast("Report download ho rahi hai!");
+  }
+}
+
+function buildSlideNav(globalIdx, totalSlides, allLabels) {
+  const dots = allLabels.map((_, i) =>
+    `<span class="slide-dot${i === globalIdx ? " active" : ""}" onclick="goToSlide(${i})" title="${allLabels[i]}"></span>`
+  ).join("");
+  return `<div class="slide-nav">
+    <button class="nav-btn" onclick="prevSlide()" ${globalIdx === 0 ? "disabled" : ""}>◀ Prev</button>
+    <div class="slide-dots">${dots}</div>
+    <button class="nav-btn" onclick="nextSlide()" ${globalIdx === totalSlides - 1 ? "disabled" : ""}>Next ▶</button>
+  </div>`;
+}
+
+function goToSlide(n) {
+  // slide 0 = #slide-calc (input), slides 1+ = inside #output
+  const inputSlide = document.getElementById('slide-calc');
+  const resultSlides = document.querySelectorAll("#output .ppt-slide");
+  const allSlides = [inputSlide, ...Array.from(resultSlides)];
+
+  if (!allSlides[n]) return;
+  allSlides.forEach(s => { if (s) s.classList.remove("active"); });
+  allSlides[n].classList.add("active");
+  window._currentSlide = n;
+
+  // Redraw charts when analytics slide (idx 4) becomes visible
+  if (n === 4) setTimeout(() => drawAllCharts(), 80);
+
+  // Scroll to top
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function prevSlide() {
+  const cur = window._currentSlide || 0;
+  if (cur > 0) goToSlide(cur - 1);
+}
+
+function nextSlide() {
+  const inputSlide = document.getElementById('slide-calc');
+  const resultSlides = document.querySelectorAll("#output .ppt-slide");
+  const total = 1 + resultSlides.length;
+  const cur = window._currentSlide || 0;
+  if (cur < total - 1) goToSlide(cur + 1);
+}
+
+// ── PAY MATRIX (7th CPC) ──────────────────────────────────
+// Entry pay for each level (Level 1–14)
+const PM_ENTRY = {
+  1:18000, 2:19900, 3:21700, 4:25500,  5:29200,
+  6:35400, 7:44900, 8:47600, 9:53100, 10:56100,
+  11:67700,12:78800,13:123100,14:144200
+};
+const PM_MAX = {
+  1:56900,  2:63200,  3:69100,  4:81100,  5:92300,
+  6:112400, 7:142400, 8:151100, 9:167800,10:177500,
+  11:208700,12:209200,13:215900,14:218200
+};
+
+// Generate pay matrix cells for a level (3% increment, round to nearest 100)
+function genPmCells(lvl) {
+  const cells = [];
+  let val = PM_ENTRY[lvl];
+  const max = PM_MAX[lvl];
+  while (val <= max) {
+    cells.push(val);
+    val = Math.round(val * 1.03 / 100) * 100;
+    if (val > max + 2000) break; // safety
+  }
+  return cells;
+}
+
+// GP references (for display info)
+const PM_GP = {
+  1:"GP 1800", 2:"GP 1900", 3:"GP 2000", 4:"GP 2400",
+  5:"GP 2800", 6:"GP 4200", 7:"GP 4600", 8:"GP 4800",
+  9:"GP 5400",10:"GP 5400",11:"GP 6600",12:"GP 7600",
+  13:"GP 8700",14:"GP 8900"
+};
+
+let pmSelectedLvl = null;
+let pmSelectedIdx = null;
+
+function togglePM() {
+  const body  = document.getElementById("pm-body");
+  const arrow = document.getElementById("pm-arrow");
+  const open  = body.style.display === "block";
+  body.style.display  = open ? "none" : "block";
+  arrow.style.transform = open ? "rotate(0deg)" : "rotate(180deg)";
+  if (!open && !pmSelectedLvl) renderPmLevels();
+}
+
+function renderPmLevels() {
+  const row = document.getElementById("pm-lvl-row");
+  row.innerHTML = "";
+  for (let l = 1; l <= 14; l++) {
+    const btn = document.createElement("button");
+    btn.className = "pm-lvl-btn" + (pmSelectedLvl === l ? " active" : "");
+    btn.textContent = "L" + l;
+    btn.title = `Level ${l} | ${PM_GP[l]} | Entry: ₹${PM_ENTRY[l].toLocaleString('en-IN')}`;
+    btn.onclick = () => selectPmLevel(l);
+    row.appendChild(btn);
+  }
+}
+
+function selectPmLevel(lvl) {
+  pmSelectedLvl = lvl;
+  pmSelectedIdx = null;
+  renderPmLevels();
+
+  // Show level info
+  const info = document.getElementById("pm-lvl-info");
+  info.style.display = "block";
+  info.innerHTML = `Level ${lvl} &nbsp;|&nbsp; ${PM_GP[lvl]} &nbsp;|&nbsp; Entry: ₹${PM_ENTRY[lvl].toLocaleString('en-IN')} &nbsp;→&nbsp; Max: ₹${PM_MAX[lvl].toLocaleString('en-IN')}`;
+
+  document.getElementById("pm-idx-label").style.display = "block";
+  document.getElementById("pm-selected").style.display  = "none";
+
+  const cells  = genPmCells(lvl);
+  const grid   = document.getElementById("pm-cell-grid");
+  grid.innerHTML = "";
+
+  cells.forEach((pay, i) => {
+    const idx = i + 1;
+    const btn = document.createElement("button");
+    btn.className = "pm-cell-btn";
+    btn.innerHTML = `<span class="idx">Idx ${idx}</span>₹${pay.toLocaleString('en-IN')}`;
+    btn.onclick = () => applyPmCell(lvl, idx, pay);
+    grid.appendChild(btn);
+  });
+}
+
+function applyPmCell(lvl, idx, pay) {
+  pmSelectedIdx = idx;
+
+  // Highlight selected cell
+  document.querySelectorAll(".pm-cell-btn").forEach((b, i) => {
+    b.classList.toggle("active", i === idx - 1);
+  });
+
+  // Fill Basic Pay field
+  document.getElementById("basic").value = pay;
+
+  // Set Level dropdown
+  document.getElementById("level").value = String(lvl);
+
+  // Show confirmation
+  const sel = document.getElementById("pm-selected");
+  sel.style.display = "block";
+  sel.innerHTML = `✓ Level ${lvl} | Index ${idx} | Basic = <b>₹${pay.toLocaleString('en-IN')}</b> — Fields auto-filled!`;
+
+  // Also update HRA badge
+  updateHraBadge();
+}
+
+// ── CHART ENGINE ─────────────────────────────────────────
+
+function switchTab(id, btn) {
+  ['donut','bar','proj','arrears','gain'].forEach(t => {
+    const el = document.getElementById('chart-'+t);
+    if (el) el.style.display = t === id ? 'block' : 'none';
+  });
+  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  if (id === 'bar')     setTimeout(drawBar, 120);
+  if (id === 'proj')    setTimeout(drawProj, 50);
+  if (id === 'arrears') setTimeout(drawArrears, 50);
+  if (id === 'gain')    setTimeout(drawGainPct, 50);
+}
+
+function hiDPI(canvas) {
+  const dpr = window.devicePixelRatio || 1;
+  const rect = canvas.getBoundingClientRect();
+  const w = rect.width || canvas.offsetWidth || canvas.width;
+  const h = canvas.height;
+  canvas.width  = w * dpr;
+  canvas.height = h * dpr;
+  canvas.style.width  = w + 'px';
+  canvas.style.height = h + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+  return { ctx, w, h };
+}
+
+const CHART_COLORS = ['#F0A500','#4FC3F7','#26C6DA','#FFB74D','#66BB6A','#9c7eff'];
+const CHART_LABELS = ['Basic','DA','HRA','TPT','NPS Govt'];
+
+function getSegments(r) {
+  return [r.basic, r.da, r.hra, r.tpt + r.tpt_da, r.nps_g];
+}
+
+function drawDonut(canvasId, segments, total, colors, preSelIdx) {
+  const canvas = document.getElementById(canvasId);
+  if (!canvas) return;
+  const dpr = window.devicePixelRatio || 1;
+  const size = 150;
+  canvas.width  = size * dpr;
+  canvas.height = size * dpr;
+  canvas.style.width  = size + 'px';
+  canvas.style.height = size + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const cx = size/2, cy = size/2, R = 62, r = 36;
+  const gap = 0.03;
+  let selectedIdx = (preSelIdx !== undefined && preSelIdx >= 0) ? preSelIdx : -1;
+  const segAngles = []; // store {start, end} for hit testing
+
+  function renderFrame(animate_progress) {
+    ctx.clearRect(0, 0, size, size);
+    let s = -Math.PI / 2;
+    segAngles.length = 0;
+
+    segments.forEach((val, i) => {
+      const fullSweep = (val / total) * 2 * Math.PI;
+      const sweep = fullSweep * animate_progress - gap;
+      if (sweep <= 0) { s += fullSweep * animate_progress; return; }
+
+      const isSelected = (i === selectedIdx);
+      // Push segment outward if selected
+      const pushR = isSelected ? 6 : 0;
+      const midAngle = s + gap/2 + sweep/2;
+      const ox = Math.cos(midAngle) * pushR;
+      const oy = Math.sin(midAngle) * pushR;
+
+      segAngles.push({ start: s + gap/2, end: s + sweep, idx: i });
+
+      // Outer glow for selected
+      if (isSelected) {
+        ctx.save();
+        ctx.shadowColor = colors[i];
+        ctx.shadowBlur = 12;
+      }
+
+      ctx.beginPath();
+      ctx.moveTo(cx + ox + r * Math.cos(s + gap/2), cy + oy + r * Math.sin(s + gap/2));
+      ctx.arc(cx + ox, cy + oy, R, s + gap/2, s + sweep);
+      ctx.arc(cx + ox, cy + oy, r, s + sweep, s + gap/2, true);
+      ctx.closePath();
+      ctx.fillStyle = isSelected ? colors[i] : colors[i] + 'CC';
+      ctx.fill();
+
+      if (isSelected) ctx.restore();
+
+      s += fullSweep * animate_progress;
+    });
+
+    // Center text
+    if (animate_progress > 0.5) {
+      const alpha = Math.min((animate_progress - 0.5) * 2, 1);
+      ctx.globalAlpha = alpha;
+
+      const dispIdx = selectedIdx >= 0 ? selectedIdx : 0;
+      const pct = Math.round((segments[dispIdx] / total) * 100);
+      const label = CHART_LABELS[dispIdx];
+
+      // Dark center circle
+      ctx.fillStyle = '#0A0E1A';
+      ctx.beginPath();
+      ctx.arc(cx, cy, r - 2, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Colored ring inside
+      if (selectedIdx >= 0) {
+        ctx.strokeStyle = colors[selectedIdx];
+        ctx.lineWidth = 2;
+        ctx.beginPath();
+        ctx.arc(cx, cy, r - 3, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+
+      ctx.fillStyle = selectedIdx >= 0 ? colors[selectedIdx] : '#E8EAF0';
+      ctx.font = `bold 14px 'Share Tech Mono',monospace`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(`${pct}%`, cx, cy - 8);
+
+      ctx.font = `10px 'Exo 2',sans-serif`;
+      ctx.fillStyle = selectedIdx >= 0 ? colors[selectedIdx] + 'CC' : '#7A8FA6';
+      ctx.fillText(label, cx, cy + 7);
+
+      if (selectedIdx >= 0) {
+        // Show amount too
+        ctx.font = `bold 9px 'Share Tech Mono',monospace`;
+        ctx.fillStyle = '#E8EAF0';
+        ctx.fillText('₹' + Math.round(segments[selectedIdx]/1000) + 'K', cx, cy + 20);
+      }
+
+      ctx.globalAlpha = 1;
+    }
+  }
+
+  // Initial animation
+  let progress = 0;
+  const animate = () => {
+    progress = Math.min(progress + 0.045, 1);
+    renderFrame(progress);
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+
+  // Hit test helper
+  function getAngle(x, y) {
+    let angle = Math.atan2(y - cy, x - cx);
+    if (angle < -Math.PI/2) angle += 2*Math.PI;
+    return angle;
+  }
+  function getDist(x, y) {
+    return Math.sqrt((x-cx)**2 + (y-cy)**2);
+  }
+  function hitTest(x, y) {
+    const dist = getDist(x, y);
+    if (dist < r - 4 || dist > R + 10) return -1;
+    const angle = getAngle(x, y);
+    for (const seg of segAngles) {
+      if (angle >= seg.start && angle <= seg.end) return seg.idx;
+    }
+    return -1;
+  }
+
+  function showTip(idx) {
+    const tipId = canvasId === 'cv-donut7' ? 'tip-donut7' : 'tip-donut8';
+    const tip = document.getElementById(tipId);
+    if (!tip) return;
+    if (idx < 0) {
+      tip.className = 'donut-tip';
+      return;
+    }
+    const label  = CHART_LABELS[idx];
+    const val    = segments[idx];
+    const pct    = ((val/total)*100).toFixed(1);
+    const color  = colors[idx];
+    tip.innerHTML = `<span style="color:${color};font-weight:700">${label}</span><br/>
+      <span style="color:#fff;font-family:'Share Tech Mono',monospace">₹${Math.round(val).toLocaleString('en-IN')}</span><br/>
+      <span style="color:#8A9EC0;font-size:.68rem">${pct}% of Gross</span>`;
+    tip.className = 'donut-tip visible';
+    tip.style.borderColor = color + '60';
+  }
+
+  function handleClick(evt) {
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = size / rect.width;
+    const scaleY = size / rect.height;
+    let clientX, clientY;
+    if (evt.touches) {
+      clientX = evt.touches[0].clientX;
+      clientY = evt.touches[0].clientY;
+    } else {
+      clientX = evt.clientX;
+      clientY = evt.clientY;
+    }
+    const x = (clientX - rect.left) * scaleX;
+    const y = (clientY - rect.top)  * scaleY;
+    const hit = hitTest(x, y);
+    if (hit >= 0) {
+      selectedIdx = (selectedIdx === hit) ? -1 : hit; // toggle
+    } else if (getDist(x, y) < r) {
+      selectedIdx = -1; // tap center = reset
+    }
+    renderFrame(1);
+    showTip(selectedIdx);
+    // Also highlight legend
+    highlightLegend(canvasId, selectedIdx);
+  }
+
+  canvas.addEventListener('click', handleClick);
+  canvas.addEventListener('touchstart', (e) => { e.preventDefault(); handleClick(e); }, { passive: false });
+  canvas.style.cursor = 'pointer';
+}
+
+function highlightLegend(canvasId, idx) {
+  // Update the shared legend below donuts
+  const el = document.getElementById('donut-legend');
+  if (!el) return;
+  el.querySelectorAll('.legend-item').forEach((item, i) => {
+    item.style.opacity = (idx < 0 || i === idx) ? '1' : '0.35';
+    item.style.transform = (i === idx) ? 'scale(1.08)' : 'scale(1)';
+    item.style.transition = 'all .2s';
+  });
+}
+
+function drawLegend() {
+  const el = document.getElementById('donut-legend');
+  if (!el) return;
+  el.innerHTML = CHART_LABELS.map((l,i) =>
+    `<div class="legend-item" style="cursor:pointer;border-radius:6px;padding:3px 6px;transition:all .2s"
+      onclick="legendClick(${i})"
+      onmouseenter="this.style.background='${CHART_COLORS[i]}20'"
+      onmouseleave="this.style.background='transparent'">
+      <div class="legend-dot" style="background:${CHART_COLORS[i]}"></div>${l}
+    </div>`
+  ).join('');
+}
+
+// Legend click — highlight same idx on both donuts
+function legendClick(idx) {
+  const d7 = document.getElementById('cv-donut7');
+  const d8 = document.getElementById('cv-donut8');
+  // Simulate click at center-right of the segment visually via re-render
+  // We store selected state globally per canvas
+  window._donutSel = window._donutSel === idx ? -1 : idx;
+  highlightLegend('', window._donutSel);
+  drawAllCharts(window._donutSel);
+}
+
+function drawBar() {
+  const canvas = document.getElementById('cv-bar');
+  if (!canvas || !window._chartData) return;
+  const { r7, r8 } = window._chartData;
+  const dpr = window.devicePixelRatio || 1;
+
+  // Reliable width: use clientWidth, fallback to innerWidth for mobile
+  const parentW = canvas.parentElement ? canvas.parentElement.clientWidth : 0;
+  const W = Math.max(parentW > 50 ? parentW - 20 : window.innerWidth - 64, 200);
+
+  const items = [
+    { label: 'Basic',   v7: r7.basic,   v8: r8.basic  },
+    { label: 'DA',      v7: r7.da,      v8: r8.da     },
+    { label: 'HRA',     v7: r7.hra,     v8: r8.hra    },
+    { label: 'TPT',     v7: r7.tpt+r7.tpt_da, v8: r8.tpt+r8.tpt_da },
+    { label: 'Gross',   v7: r7.gross,   v8: r8.gross  },
+    { label: 'NET',     v7: r7.net,     v8: r8.net    },
+  ];
+
+  const maxVal = Math.max(...items.map(i => Math.max(i.v7, i.v8)));
+  const rowH = 32, pad = 44, barGap = 3;
+  const barH = (rowH - barGap * 3) / 2;
+  const totalH = items.length * rowH + 30;
+
+  // Set ALL dimensions BEFORE getting context — resetting canvas.height clears ctx.scale!
+  canvas.width  = W * dpr;
+  canvas.height = totalH * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = totalH + 'px';
+
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr); // called ONCE after all dimensions are final
+  ctx.clearRect(0, 0, W, totalH);
+
+  let progress = 0;
+  const animate = () => {
+    ctx.clearRect(0, 0, W, totalH);
+    progress = Math.min(progress + 0.04, 1);
+    const ease = 1 - Math.pow(1-progress, 3);
+    const availW = W - pad - 8;
+
+    items.forEach((item, i) => {
+      const y = i * rowH + 4;
+      // Label
+      ctx.fillStyle = '#7A8FA6';
+      ctx.font = "10px 'Exo 2',sans-serif";
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.label, pad - 4, y + rowH/2);
+
+      // 7th bar
+      const w7 = (item.v7 / maxVal) * availW * ease;
+      const rr = 3;
+      ctx.fillStyle = '#4FC3F740';
+      ctx.beginPath();
+      ctx.roundRect(pad, y + 2, availW, barH, rr);
+      ctx.fill();
+      ctx.fillStyle = '#4FC3F7';
+      ctx.beginPath();
+      ctx.roundRect(pad, y + 2, Math.max(w7,1), barH, rr);
+      ctx.fill();
+
+      // 8th bar
+      const w8 = (item.v8 / maxVal) * availW * ease;
+      ctx.fillStyle = '#F0A50040';
+      ctx.beginPath();
+      ctx.roundRect(pad, y + barH + barGap + 2, availW, barH, rr);
+      ctx.fill();
+      ctx.fillStyle = '#F0A500';
+      ctx.beginPath();
+      ctx.roundRect(pad, y + barH + barGap + 2, Math.max(w8,1), barH, rr);
+      ctx.fill();
+
+      // Value labels — inside bar if it would overflow, outside otherwise
+      if (progress > 0.6) {
+        const alpha = Math.min((progress - 0.6) / 0.4, 1);
+        ctx.globalAlpha = alpha;
+        ctx.font = "9px 'Share Tech Mono',monospace";
+
+        const lbl7 = '₹'+Math.round(item.v7/1000)+'K';
+        const lbl8 = '₹'+Math.round(item.v8/1000)+'K';
+        const lblW7 = ctx.measureText(lbl7).width;
+        const lblW8 = ctx.measureText(lbl8).width;
+
+        // 7th CPC label
+        if (pad + w7 + 3 + lblW7 < W - 4) {
+          // fits outside bar
+          ctx.fillStyle = '#4FC3F7';
+          ctx.textAlign = 'left';
+          ctx.fillText(lbl7, pad + w7 + 3, y + 2 + barH/2);
+        } else {
+          // draw inside bar, right-aligned
+          ctx.fillStyle = '#0A0E1A';
+          ctx.textAlign = 'right';
+          ctx.fillText(lbl7, pad + w7 - 3, y + 2 + barH/2);
+        }
+
+        // 8th CPC label
+        if (pad + w8 + 3 + lblW8 < W - 4) {
+          ctx.fillStyle = '#F0A500';
+          ctx.textAlign = 'left';
+          ctx.fillText(lbl8, pad + w8 + 3, y + barH + barGap + 2 + barH/2);
+        } else {
+          ctx.fillStyle = '#0A0E1A';
+          ctx.textAlign = 'right';
+          ctx.fillText(lbl8, pad + w8 - 3, y + barH + barGap + 2 + barH/2);
+        }
+
+        ctx.globalAlpha = 1;
+      }
+    });
+
+    // Legend
+    ctx.fillStyle = '#4FC3F7';
+    ctx.beginPath();ctx.roundRect(pad, totalH-14, 10, 6, 2);ctx.fill();
+    ctx.fillStyle = '#7A8FA6';ctx.font="9px 'Exo 2',sans-serif";ctx.textAlign='left';
+    ctx.fillText('7th CPC', pad+13, totalH-11);
+    ctx.fillStyle = '#F0A500';
+    ctx.beginPath();ctx.roundRect(pad+70, totalH-14, 10, 6, 2);ctx.fill();
+    ctx.fillStyle = '#7A8FA6';
+    ctx.fillText('8th CPC', pad+83, totalH-11);
+
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
+
+function drawProj() {
+  const canvas = document.getElementById('cv-proj');
+  if (!canvas || !window._chartData) return;
+  const { basic, city, lvl, usedFitment, r7 } = window._chartData;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.offsetWidth - 20;
+  const H = 180;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  // Calc net pay at different DA levels for 8th CPC
+  const daPoints = [0,3,6,9,12,15];
+  const newBasic = Math.ceil(basic * usedFitment / 100) * 100;
+  const nets8 = daPoints.map(da => {
+    const daAmt = Math.round(newBasic * da / 100);
+    const nb = newBasic + daAmt;
+    const npsE = Math.round(nb * 0.10);
+    const npsG = Math.round(nb * 0.14);
+    const hraR = da >= 50 ? {X:0.30,Y:0.20,Z:0.10} : da >= 25 ? {X:0.27,Y:0.18,Z:0.09} : {X:0.24,Y:0.16,Z:0.08};
+    const hra  = Math.round(newBasic * (hraR[city]||0.24));
+    const tpt  = lvl <= 2 ? 5200 : lvl <= 8 ? 13800 : 27600;
+    const tptDa= Math.round(tpt * da / 100);
+    const cgArr= lvl <= 5 ? [115,5750] : lvl <= 9 ? [230,11500] : [460,23000];
+    const gross= newBasic + daAmt + hra + tpt + tptDa + npsG;
+    const deduct = npsE + npsG + cgArr[0] + cgArr[1];
+    return gross - deduct;
+  });
+
+  const net7 = r7.net;
+  const allVals = [...nets8, net7];
+  const minV = Math.min(...allVals) * 0.92;
+  const maxV = Math.max(...allVals) * 1.05;
+
+  const padL = 52, padR = 14, padT = 16, padB = 36;
+  const chartW = W - padL - padR;
+  const chartH = H - padT - padB;
+
+  const xPos = (i) => padL + (i / (daPoints.length-1)) * chartW;
+  const yPos = (v) => padT + chartH - ((v - minV) / (maxV - minV)) * chartH;
+
+  let progress = 0;
+  const animate = () => {
+    ctx.clearRect(0, 0, W, H);
+    progress = Math.min(progress + 0.035, 1);
+    const ease = 1 - Math.pow(1-progress, 3);
+
+    // Grid lines
+    for (let g = 0; g <= 4; g++) {
+      const y = padT + (g/4)*chartH;
+      ctx.strokeStyle = '#ffffff08';
+      ctx.lineWidth = 1;
+      ctx.beginPath();ctx.moveTo(padL,y);ctx.lineTo(W-padR,y);ctx.stroke();
+      const val = maxV - (g/4)*(maxV-minV);
+      ctx.fillStyle = '#7A8FA6';
+      ctx.font = "9px 'Share Tech Mono',monospace";
+      ctx.textAlign = 'right';
+      ctx.fillText('₹'+Math.round(val/1000)+'K', padL-4, y+3);
+    }
+
+    // 7th CPC baseline
+    const y7 = yPos(net7);
+    ctx.strokeStyle = '#4FC3F750';
+    ctx.setLineDash([4,3]);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();ctx.moveTo(padL,y7);ctx.lineTo(W-padR,y7);ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.fillStyle = '#4FC3F7';
+    ctx.font = "9px 'Exo 2',sans-serif";
+    ctx.textAlign = 'left';
+    ctx.fillText('7th: ₹'+Math.round(net7/1000)+'K', padL+2, y7-4);
+
+    // 8th CPC area fill
+    const drawCount = Math.round(ease * (daPoints.length - 1));
+    if (drawCount >= 1) {
+      ctx.beginPath();
+      ctx.moveTo(xPos(0), yPos(nets8[0]));
+      for (let i = 1; i <= Math.min(drawCount, daPoints.length-1); i++) {
+        ctx.lineTo(xPos(i), yPos(nets8[i]));
+      }
+      const lastX = drawCount < daPoints.length-1 
+        ? xPos(drawCount-1) + (xPos(drawCount)-xPos(drawCount-1))*((ease*(daPoints.length-1))-drawCount+1)
+        : xPos(daPoints.length-1);
+      const lastY = drawCount < daPoints.length-1
+        ? yPos(nets8[drawCount-1]) + (yPos(nets8[drawCount])-yPos(nets8[drawCount-1]))*((ease*(daPoints.length-1))-drawCount+1)
+        : yPos(nets8[daPoints.length-1]);
+      ctx.lineTo(lastX, lastY);
+      ctx.lineTo(lastX, padT+chartH);
+      ctx.lineTo(xPos(0), padT+chartH);
+      ctx.closePath();
+      const grad = ctx.createLinearGradient(0, padT, 0, padT+chartH);
+      grad.addColorStop(0, '#9c7eff40');
+      grad.addColorStop(1, '#9c7eff05');
+      ctx.fillStyle = grad;
+      ctx.fill();
+
+      // Line
+      ctx.beginPath();
+      ctx.strokeStyle = '#9c7eff';
+      ctx.lineWidth = 2.5;
+      ctx.lineJoin = 'round';
+      ctx.moveTo(xPos(0), yPos(nets8[0]));
+      for (let i = 1; i <= Math.min(drawCount, daPoints.length-1); i++) {
+        ctx.lineTo(xPos(i), yPos(nets8[i]));
+      }
+      ctx.stroke();
+
+      // Dots
+      for (let i = 0; i <= Math.min(drawCount, daPoints.length-1); i++) {
+        ctx.beginPath();
+        ctx.arc(xPos(i), yPos(nets8[i]), 4, 0, Math.PI*2);
+        ctx.fillStyle = '#9c7eff';
+        ctx.fill();
+        ctx.strokeStyle = '#1B2A3B';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // X label
+        ctx.fillStyle = '#7A8FA6';
+        ctx.font = "9px 'Share Tech Mono',monospace";
+        ctx.textAlign = 'center';
+        ctx.fillText(daPoints[i]+'%', xPos(i), H-padB+14);
+      }
+    }
+
+    // X axis label
+    ctx.fillStyle = '#7A8FA6';
+    ctx.font = "9px 'Exo 2',sans-serif";
+    ctx.textAlign = 'center';
+    ctx.fillText('DA % on New Basic', W/2, H-2);
+
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
+
+function drawAllCharts(preSelIdx) {
+  if (!window._chartData) return;
+  const { r7, r8 } = window._chartData;
+  const seg7 = getSegments(r7);
+  const seg8 = getSegments(r8);
+  drawDonut('cv-donut7', seg7, r7.gross, CHART_COLORS, preSelIdx);
+  drawDonut('cv-donut8', seg8, r8.gross, CHART_COLORS, preSelIdx);
+  drawLegend();
+}
+
+function updateHraBadge() {
+  const city = document.getElementById("hra").value || "X";
+  const da7  = parseFloat(document.getElementById("da7").value) || 0;
+  const da8  = parseFloat(document.getElementById("da8").value) || 0;
+
+  function slabDesc(da) {
+    if (da >= 50) return { pct: {X:"30%",Y:"20%",Z:"10%"}, label:"DA ≥ 50% slab", icon:"🔵" };
+    if (da >= 25) return { pct: {X:"27%",Y:"18%",Z:"9%"},  label:"DA ≥ 25% slab", icon:"🟡" };
+    return           { pct: {X:"24%",Y:"16%",Z:"8%"},      label:"DA < 25% slab",  icon:"🔴" };
+  }
+
+  const s7 = slabDesc(da7);
+  const s8 = slabDesc(da8);
+  const cityNames = { X:"X", Y:"Y", Z:"Z" };
+  const c = city in cityNames ? city : "X";
+
+  const b7 = document.getElementById("hra7_badge");
+  const b8 = document.getElementById("hra8_badge");
+  if (b7) b7.innerHTML = `${s7.icon} ${s7.label} → HRA = <b>${s7.pct[c]}</b> of Basic &nbsp;(min ₹${{X:"5,400",Y:"3,600",Z:"1,800"}[c]})`;
+  if (b8) b8.innerHTML = `${s8.icon} ${s8.label} → HRA = <b>${s8.pct[c]}</b> of 8th Basic`;
+}
+
+// Also re-run badge when city changes
+document.addEventListener("DOMContentLoaded", () => {
+  updateHraBadge();
+  document.getElementById("hra").addEventListener("change", updateHraBadge);
+});
+function slipHTML(cpc, sub, r, color) {
+  const rows = (items) => items.map(([k, v]) =>
+    `<div class="slip-row"><span class="lbl">${k}</span><span class="val">${inr(v)}</span></div>`
+  ).join("");
+
+  return `<div class="slip">
+    <div class="slip-header" style="background:${color}20;color:${color}">${cpc}<br/><small style="font-size:.68rem;opacity:.8">${sub}</small></div>
+
+    <div class="sec-header" style="background:${color}90">EARNINGS</div>
+    ${rows([
+      ["Basic",              r.basic],
+      [`DA ${r.da_pct}%`,   r.da],
+      ["HRA",                r.hra],
+      ["TPT",                r.tpt],
+      ["TPT DA",             r.tpt_da],
+      ["NPS Govt",           r.nps_g],
+    ])}
+
+    <div class="sec-header" style="background:#EF535090">DEDUCTIONS</div>
+    ${rows([
+      ["NPS Emp",  r.nps_e],
+      ["NPS Govt", r.nps_g],
+      ["CGEIS-I",  r.ci],
+      ["CGEIS-S",  r.cs],
+    ])}
+
+    <div class="slip-divider" style="background:${color}40"></div>
+    <div class="slip-total"><span class="lbl" style="color:${color}">Gross</span><span class="val" style="color:${color}">${inr(r.gross)}</span></div>
+    <div class="slip-total"><span class="lbl" style="color:var(--red)">Deduct</span><span class="val" style="color:var(--red)">${inr(r.deduct)}</span></div>
+    <div class="slip-total"><span class="lbl" style="color:var(--grn)">NET</span><span class="val" style="color:var(--grn)">${inr(r.net)}</span></div>
+  </div>`;
+}
+
+// ── ARREARS BREAKDOWN CHART ───────────────────────────────
+function drawArrears() {
+  const canvas = document.getElementById('cv-arrears');
+  if (!canvas || !window._chartData) return;
+  const { arr7, arr8, firstCr, r8 } = window._chartData;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.offsetWidth - 20;
+  const H = 200;
+  canvas.width  = W * dpr;
+  canvas.height = H * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = H + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const items = [
+    { label: '8th CPC\nArrears\n(~18 mo)', val: arr8,     color: '#9c7eff' },
+    { label: '7th DA\nArrears\n(3 mo)',     val: arr7,     color: '#56D98A' },
+    { label: 'New Month\nNet Pay',          val: r8.net,   color: '#F0A500' },
+  ];
+  const total = firstCr;
+  const maxVal = Math.max(...items.map(i => i.val));
+  const pad = 10, barW = Math.floor((W - pad*2 - 20) / items.length) - 8;
+  const chartH = H - 80;
+
+  let progress = 0;
+  const animate = () => {
+    ctx.clearRect(0, 0, W, H);
+    progress = Math.min(progress + 0.04, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    items.forEach((item, i) => {
+      const x = pad + i * (barW + 8) + 4;
+      const bH = (item.val / maxVal) * chartH * ease;
+      const y = chartH - bH + 20;
+
+      // Bar background
+      ctx.fillStyle = item.color + '20';
+      ctx.beginPath();
+      ctx.roundRect(x, 20, barW, chartH, 4);
+      ctx.fill();
+
+      // Bar fill
+      ctx.fillStyle = item.color;
+      ctx.beginPath();
+      ctx.roundRect(x, y, barW, bH, 4);
+      ctx.fill();
+
+      // Amount on top
+      if (progress > 0.5) {
+        const alpha = Math.min((progress - 0.5) * 2, 1);
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = item.color;
+        ctx.font = `bold 9px 'Share Tech Mono',monospace`;
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'bottom';
+        ctx.fillText('₹' + Math.round(item.val / 1000) + 'K', x + barW/2, y - 3);
+
+        // % of total
+        const pct = ((item.val / total) * 100).toFixed(0);
+        ctx.fillStyle = '#7A8FA6';
+        ctx.font = `8px 'Exo 2',sans-serif`;
+        ctx.fillText(pct + '%', x + barW/2, y - 13);
+        ctx.globalAlpha = 1;
+      }
+
+      // Label (multiline)
+      const lines = item.label.split('\n');
+      ctx.fillStyle = '#8A9EC0';
+      ctx.font = `8px 'Exo 2',sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      lines.forEach((line, li) => {
+        ctx.fillText(line, x + barW/2, chartH + 24 + li * 11);
+      });
+    });
+
+    // Total credit line
+    if (progress > 0.7) {
+      ctx.globalAlpha = Math.min((progress - 0.7) / 0.3, 1);
+      ctx.fillStyle = '#ffffff';
+      ctx.font = `bold 10px 'Rajdhani',sans-serif`;
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'top';
+      ctx.fillText('TOTAL FIRST MONTH CREDIT: ₹' + Math.round(total/1000) + 'K', W/2, 4);
+      ctx.globalAlpha = 1;
+    }
+
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
+
+// ── % GAIN CHART ─────────────────────────────────────────
+function drawGainPct() {
+  const canvas = document.getElementById('cv-gain');
+  if (!canvas || !window._chartData) return;
+  const { r7, r8 } = window._chartData;
+  const dpr = window.devicePixelRatio || 1;
+  const W = canvas.parentElement.offsetWidth - 20;
+
+  const items = [
+    { label: 'Basic',      v7: r7.basic,  v8: r8.basic  },
+    { label: 'DA',         v7: r7.da,     v8: r8.da     },
+    { label: 'HRA',        v7: r7.hra,    v8: r8.hra    },
+    { label: 'TPT',        v7: r7.tpt+r7.tpt_da, v8: r8.tpt+r8.tpt_da },
+    { label: 'Gross',      v7: r7.gross,  v8: r8.gross  },
+    { label: 'NET Pay',    v7: r7.net,    v8: r8.net    },
+  ].map(i => ({ ...i, pct: Math.round(((i.v8 - i.v7) / i.v7) * 100) }));
+
+  const rowH = 34, pad = 52, barGap = 4;
+  const barH = rowH - barGap * 2 - 4;
+  const totalH = items.length * rowH + 28;
+
+  canvas.width  = W * dpr;
+  canvas.height = totalH * dpr;
+  canvas.style.width  = W + 'px';
+  canvas.style.height = totalH + 'px';
+  const ctx = canvas.getContext('2d');
+  ctx.scale(dpr, dpr);
+
+  const maxPct = Math.max(...items.map(i => i.pct));
+  const availW = W - pad - 10;
+
+  let progress = 0;
+  const animate = () => {
+    ctx.clearRect(0, 0, W, totalH);
+    progress = Math.min(progress + 0.04, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+
+    items.forEach((item, i) => {
+      const y = i * rowH + 4;
+      const bW = (item.pct / maxPct) * availW * ease;
+
+      // Label
+      ctx.fillStyle = '#7A8FA6';
+      ctx.font = "10px 'Exo 2',sans-serif";
+      ctx.textAlign = 'right';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(item.label, pad - 4, y + barH/2 + 2);
+
+      // Bar background
+      ctx.fillStyle = '#56D98A15';
+      ctx.beginPath();
+      ctx.roundRect(pad, y + 2, availW, barH, 4);
+      ctx.fill();
+
+      // Gradient bar fill
+      const grad = ctx.createLinearGradient(pad, 0, pad + availW, 0);
+      grad.addColorStop(0, '#56D98A');
+      grad.addColorStop(1, '#4A90E2');
+      ctx.fillStyle = grad;
+      ctx.beginPath();
+      ctx.roundRect(pad, y + 2, Math.max(bW, 2), barH, 4);
+      ctx.fill();
+
+      // % label
+      if (progress > 0.55) {
+        const alpha = Math.min((progress - 0.55) / 0.45, 1);
+        ctx.globalAlpha = alpha;
+        const lblText = '+' + item.pct + '%';
+        const lblW = ctx.measureText(lblText).width + 20;
+        ctx.font = "bold 9px 'Share Tech Mono',monospace";
+
+        if (bW + pad + lblW < W - 4) {
+          ctx.fillStyle = '#56D98A';
+          ctx.textAlign = 'left';
+          ctx.fillText(lblText, pad + bW + 4, y + barH/2 + 2);
+        } else {
+          ctx.fillStyle = '#0A0E1A';
+          ctx.textAlign = 'right';
+          ctx.fillText(lblText, pad + bW - 4, y + barH/2 + 2);
+        }
+        ctx.globalAlpha = 1;
+      }
+    });
+
+    // X-axis label
+    ctx.fillStyle = '#7A8FA6';
+    ctx.font = "8px 'Exo 2',sans-serif";
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'bottom';
+    ctx.fillText('% Increase over 7th CPC', W/2, totalH - 2);
+
+    if (progress < 1) requestAnimationFrame(animate);
+  };
+  requestAnimationFrame(animate);
+}
+</script>
+
+<!-- ══ COMMENTS SECTION ══ -->
+<div class="comments-section" id="comments-section">
+
+  <div class="comments-header">
+    <div class="comments-header-icon"><i class="fa-solid fa-comments"></i></div>
+    <div>
+      <h2>Community Discussion</h2>
+      <p>Share your queries, results &amp; feedback</p>
+    </div>
+    <span class="comment-count-badge" id="comment-count-badge">0 Comments</span>
+  </div>
+
+  <!-- Comment Form -->
+  <div class="comment-form" id="comment-form">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="comment-name"><i class="fa-solid fa-user"></i>&nbsp; Your Name *</label>
+        <input type="text" id="comment-name" class="form-input" placeholder="Enter your name" maxlength="40"/>
+        <span class="form-error" id="err-name">Please enter your name</span>
+      </div>
+      <div class="form-group">
+        <label for="comment-dept"><i class="fa-solid fa-briefcase"></i>&nbsp; Department / Role</label>
+        <input type="text" id="comment-dept" class="form-input" placeholder="e.g. MoF, Level 6, Railways…" maxlength="50"/>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="comment-text"><i class="fa-solid fa-pen-nib"></i>&nbsp; Your Comment *</label>
+      <textarea id="comment-text" class="form-input" placeholder="Share your salary calculation result, ask a question, or give feedback…" maxlength="500"></textarea>
+      <span class="form-error" id="err-text">Please write something (min 10 chars)</span>
+    </div>
+    <div class="form-footer">
+      <span class="char-count" id="char-count">0 / 500</span>
+      <button class="submit-btn" id="submit-btn" onclick="submitComment()">
+        <div class="btn-spinner" id="btn-spinner"></div>
+        <i class="fa-solid fa-paper-plane" id="submit-icon"></i>
+        <span id="submit-label">Post Comment</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Comments List -->
+  <div class="comments-toolbar" id="comments-toolbar" style="display:none">
+    <h3><i class="fa-solid fa-list"></i>&nbsp; All Comments</h3>
+    <div class="sort-btns">
+      <button class="sort-btn active" id="sort-newest" onclick="sortComments('newest')">Newest</button>
+      <button class="sort-btn" id="sort-oldest" onclick="sortComments('oldest')">Oldest</button>
+      <button class="sort-btn" id="sort-liked"  onclick="sortComments('liked')">Most Liked</button>
+    </div>
+  </div>
+
+  <div class="comments-list" id="comments-list">
+    <div class="comments-empty" id="comments-empty">
+      <div class="empty-icon">💬</div>
+      <p>Koi comment abhi tak nahi. Pehle comment karo!</p>
+    </div>
+  </div>
+
+</div><!-- /comments-section -->
+
+<!-- ══ FOOTER ══ -->
+<footer class="footer">
+  <div class="flag-bar" style="margin:-20px -16px 16px;height:2px;opacity:0.4"></div>
+  <div class="footer-logo">8th <span>PAY COMMISSION</span> CALCULATOR</div>
+  <div class="footer-links">
+    <span class="footer-link"><i class="fa-solid fa-circle-info"></i>&nbsp;v3.3 Premium</span>
+    <span class="footer-link"><i class="fa-solid fa-shield-halved"></i>&nbsp;Data stays on your device</span>
+    <span class="footer-link"><i class="fa-solid fa-mobile-screen"></i>&nbsp;Mobile-Optimized</span>
+  </div>
+  <div class="footer-disclaimer">
+    <i class="fa-solid fa-triangle-exclamation" style="color:var(--warn)"></i>&nbsp;
+    <strong>Disclaimer:</strong> Ye calculator estimated projections provide karta hai based on available information.
+    Actual 8th CPC figures official notification ke baad update honge. Policy details ke liye official DoPT/MoF sources refer karein.
+  </div>
+  <div class="footer-copy" onclick="adminTrigger()" style="cursor:default;user-select:none">Built with ❤️ for Government Employees of India &nbsp;|&nbsp; Not affiliated with Government of India</div>
+</footer>
+
+<!-- ══ ADMIN PANEL OVERLAY ══ -->
+<div id="admin-panel">
+  <div class="admin-box">
+    <h2>
+      <i class="fa-solid fa-shield-halved"></i>
+      Admin — Comment Moderation
+      <span style="margin-left:auto">
+        <button class="admin-refresh-btn" onclick="refreshAdminTab()"><i class="fa-solid fa-rotate-right"></i> Refresh</button>
+        <button class="admin-close-btn" onclick="closeAdminPanel()"><i class="fa-solid fa-xmark"></i> Close</button>
+      </span>
+    </h2>
+    <div class="admin-subtitle">Comments manage karo — approve, reject, ya delete</div>
+    <div class="admin-tabs">
+      <button class="admin-tab active" id="tab-pending" onclick="switchAdminTab('pending')">
+        <i class="fa-solid fa-clock"></i> Pending
+        <span class="admin-tab-badge" id="badge-pending">0</span>
+      </button>
+      <button class="admin-tab" id="tab-approved" onclick="switchAdminTab('approved')">
+        <i class="fa-solid fa-check"></i> Approved
+        <span class="admin-tab-badge approved" id="badge-approved">0</span>
+      </button>
+    </div>
+    <div id="admin-pending-list"></div>
+    <div id="admin-approved-list" style="display:none"></div>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+<script>
+/* ═══════════════════════════════════════════════════
+   FIREBASE INIT
+   ═══════════════════════════════════════════════════ */
+const firebaseConfig = {
+  apiKey: "AIzaSyDtgF4KJE14axbyI630EKhH6GInk0f7AU0",
+  authDomain: "pay-calculators.firebaseapp.com",
+  projectId: "pay-calculators",
+  storageBucket: "pay-calculators.firebasestorage.app",
+  messagingSenderId: "465247918955",
+  appId: "1:465247918955:web:c387666381cfb7b6064a2e",
+  measurementId: "G-49FGQ3KZ79"
+};
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+/* ═══════════════════════════════════════════════════
+   COMMENT SYSTEM — Firebase + Moderation + Validation
+   ═══════════════════════════════════════════════════ */
+let currentSort = 'newest';
+let allComments = [];
+let unsubscribeComments = null;
+
+/* ── Admin Config (is password ko badal sakte hain) ── */
+const ADMIN_PASS = 'paycomm@2025';
+let adminClickCount = 0;
+let adminClickTimer = null;
+
+/* ── Avatar colors ── */
+const AVATAR_COLORS = [
+  ['#3B82F6','#1D4ED8'], ['#8B5CF6','#6D28D9'], ['#EC4899','#BE185D'],
+  ['#10B981','#047857'], ['#F59E0B','#B45309'], ['#EF4444','#B91C1C'],
+  ['#06B6D4','#0E7490'], ['#84CC16','#4D7C0F'],
+];
+function getAvatarColor(name) {
+  let hash = 0;
+  for (let i = 0; i < name.length; i++) hash = name.charCodeAt(i) + ((hash<<5)-hash);
+  return AVATAR_COLORS[Math.abs(hash) % AVATAR_COLORS.length];
+}
+function getInitials(name) {
+  return name.trim().split(/\s+/).map(w => w[0]?.toUpperCase() || '').slice(0,2).join('');
+}
+
+/* ── Format timestamp ── */
+function formatTime(ts) {
+  if (!ts) return '';
+  const d = ts.toDate ? ts.toDate() : new Date(ts);
+  const now = new Date();
+  const diff = (now - d) / 1000;
+  if (diff < 60)    return 'Just now';
+  if (diff < 3600)  return Math.floor(diff/60) + 'm ago';
+  if (diff < 86400) return Math.floor(diff/3600) + 'h ago';
+  if (diff < 604800)return Math.floor(diff/86400) + 'd ago';
+  return d.toLocaleDateString('en-IN', { day:'2-digit', month:'short', year:'numeric' });
+}
+
+/* ── Gibberish Detection ── */
+function isGibberish(text) {
+  const t = text.toLowerCase();
+  // 5+ consonants in a row = gibberish
+  if (/[^aeiou\s\u0900-\u097F]{5,}/.test(t)) return true;
+  const letters = t.replace(/[^a-z]/g,'');
+  if (letters.length > 10) {
+    const vowels = (t.match(/[aeiou]/g) || []).length;
+    if (vowels / letters.length < 0.08) return true;
+  }
+  // Same char repeated 4+ times
+  if (/(.)\1{4,}/.test(t)) return true;
+  // Too many 1-2 char "words" (random keys)
+  const words = t.trim().split(/\s+/);
+  const shortWords = words.filter(w => w.length <= 2).length;
+  if (words.length >= 6 && shortWords / words.length > 0.75) return true;
+  return false;
+}
+
+function isValidName(name) {
+  if (name.length < 2 || name.length > 40) return false;
+  if (!/[a-zA-Z\u0900-\u097F]/.test(name)) return false;
+  if (/[<>{}|\\^~\[\]`@#$%]/.test(name)) return false;
+  return true;
+}
+
+/* ── User ID ── */
+function getUID() {
+  let uid = localStorage.getItem('8cpc_uid');
+  if (!uid) { uid = Math.random().toString(36).slice(2); localStorage.setItem('8cpc_uid', uid); }
+  return 'user_' + uid;
+}
+
+/* ── Character counter ── */
+document.getElementById('comment-text')?.addEventListener('input', function() {
+  const len = this.value.length;
+  const el  = document.getElementById('char-count');
+  if (!el) return;
+  el.textContent = len + ' / 500';
+  el.className = 'char-count' + (len > 460 ? ' warn' : '') + (len >= 500 ? ' over' : '');
+});
+
+/* ── Form Validation ── */
+function validateForm() {
+  let valid = true;
+  const name = document.getElementById('comment-name').value.trim();
+  const text = document.getElementById('comment-text').value.trim();
+
+  const errName = document.getElementById('err-name');
+  const errText = document.getElementById('err-text');
+  const nameInp = document.getElementById('comment-name');
+  const textInp = document.getElementById('comment-text');
+
+  errName.classList.remove('show'); nameInp.classList.remove('error');
+  errText.classList.remove('show'); textInp.classList.remove('error');
+
+  if (!isValidName(name)) {
+    errName.textContent = name.length < 2
+      ? 'Naam kam se kam 2 characters ka hona chahiye'
+      : 'Valid naam likhein (sirf letters)';
+    errName.classList.add('show'); nameInp.classList.add('error');
+    valid = false;
+  }
+  if (text.length < 15) {
+    errText.textContent = 'Comment kam se kam 15 characters ka hona chahiye';
+    errText.classList.add('show'); textInp.classList.add('error');
+    valid = false;
+  } else if (isGibberish(text)) {
+    errText.textContent = 'Meaningful comment likhein — random/gibberish accept nahi hoga 😊';
+    errText.classList.add('show'); textInp.classList.add('error');
+    valid = false;
+  } else if (text.length > 500) {
+    errText.textContent = 'Comment bahut lamba hai (max 500 characters)';
+    errText.classList.add('show'); textInp.classList.add('error');
+    valid = false;
+  }
+  return valid;
+}
+
+/* ── Submit Comment ── */
+async function submitComment() {
+  if (!validateForm()) return;
+
+  const btn     = document.getElementById('submit-btn');
+  const spinner = document.getElementById('btn-spinner');
+  const icon    = document.getElementById('submit-icon');
+  const label   = document.getElementById('submit-label');
+
+  btn.disabled = true;
+  spinner.style.display = 'block';
+  icon.style.display    = 'none';
+  label.textContent     = 'Submitting…';
+
+  const name = document.getElementById('comment-name').value.trim();
+  const dept = document.getElementById('comment-dept').value.trim();
+  const text = document.getElementById('comment-text').value.trim();
+
+  try {
+    await db.collection('comments').add({
+      name, dept, text,
+      timestamp: firebase.firestore.FieldValue.serverTimestamp(),
+      likes: 0,
+      likedBy: [],
+      replies: [],
+      status: 'pending'
+    });
+
+    document.getElementById('comment-name').value = '';
+    document.getElementById('comment-dept').value = '';
+    document.getElementById('comment-text').value = '';
+    document.getElementById('char-count').textContent = '0 / 500';
+    document.getElementById('err-name').classList.remove('show');
+    document.getElementById('err-text').classList.remove('show');
+    document.getElementById('comment-name').classList.remove('error');
+    document.getElementById('comment-text').classList.remove('error');
+
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    icon.style.display = '';
+    label.textContent = 'Post Comment';
+
+    showToast('✓ Comment submit hua! Admin review ke baad publish hoga।');
+    document.getElementById('comments-list')?.scrollIntoView({ behavior:'smooth', block:'start' });
+  } catch(e) {
+    btn.disabled = false;
+    spinner.style.display = 'none';
+    icon.style.display = '';
+    label.textContent = 'Post Comment';
+    showToast('⚠ Error: ' + e.message);
+  }
+}
+
+/* ── Like a comment ── */
+async function likeComment(id) {
+  const uid = getUID();
+  const ref = db.collection('comments').doc(id);
+  try {
+    const snap = await ref.get();
+    if (!snap.exists) return;
+    const data = snap.data();
+    const likedBy = data.likedBy || [];
+    if (likedBy.includes(uid)) {
+      await ref.update({
+        likedBy: firebase.firestore.FieldValue.arrayRemove(uid),
+        likes: Math.max(0, (data.likes || 0) - 1)
+      });
+    } else {
+      await ref.update({
+        likedBy: firebase.firestore.FieldValue.arrayUnion(uid),
+        likes: (data.likes || 0) + 1
+      });
+    }
+  } catch(e) { console.error(e); }
+}
+
+/* ── Toggle reply area ── */
+function toggleReply(id) {
+  const area = document.getElementById('reply-area-' + id);
+  if (!area) return;
+  area.classList.toggle('open');
+  if (area.classList.contains('open')) area.querySelector('.reply-input')?.focus();
+}
+
+/* ── Submit Reply ── */
+async function submitReply(commentId) {
+  const input = document.getElementById('reply-input-' + commentId);
+  if (!input) return;
+  const text = input.value.trim();
+  if (text.length < 3) {
+    input.style.borderColor = 'rgba(244,63,94,0.5)';
+    setTimeout(() => input.style.borderColor = '', 1500);
+    return;
+  }
+  const nameEl = document.getElementById('reply-name-' + commentId);
+  const name   = nameEl ? (nameEl.value.trim() || 'Anonymous') : 'Anonymous';
+  try {
+    await db.collection('comments').doc(commentId).update({
+      replies: firebase.firestore.FieldValue.arrayUnion({
+        id: Date.now().toString(), name, text, timestamp: Date.now()
+      })
+    });
+    input.value = '';
+    if (nameEl) nameEl.value = '';
+    showToast('✓ Reply add ho gaya!');
+  } catch(e) { showToast('Error: ' + e.message); }
+}
+
+/* ── Sort ── */
+function sortComments(mode) {
+  currentSort = mode;
+  document.querySelectorAll('.sort-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('sort-' + mode)?.classList.add('active');
+  renderComments(allComments);
+}
+
+/* ── Load approved comments (real-time) ── */
+function initComments() {
+  if (unsubscribeComments) unsubscribeComments();
+  const list = document.getElementById('comments-list');
+  if (list) {
+    list.querySelectorAll('.comment-card').forEach(el => el.remove());
+    const loading = document.createElement('div');
+    loading.id = 'comments-loading';
+    loading.style.cssText = 'text-align:center;color:var(--text-muted);padding:20px;font-size:0.8rem';
+    loading.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Comments load ho rahe hain…';
+    list.appendChild(loading);
+  }
+
+  unsubscribeComments = db.collection('comments')
+    .where('status', '==', 'approved')
+    .onSnapshot(snapshot => {
+      document.getElementById('comments-loading')?.remove();
+      allComments = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+      renderComments(allComments);
+    }, err => {
+      document.getElementById('comments-loading')?.remove();
+      console.error('Firestore error:', err);
+      renderComments([]);
+    });
+}
+
+/* ── Render comments ── */
+function renderComments(comments) {
+  if (!comments) comments = allComments;
+  const uid = getUID();
+
+  const badge = document.getElementById('comment-count-badge');
+  if (badge) badge.textContent = comments.length + ' Comment' + (comments.length !== 1 ? 's' : '');
+
+  const toolbar = document.getElementById('comments-toolbar');
+  if (toolbar) toolbar.style.display = comments.length > 0 ? 'flex' : 'none';
+
+  const empty = document.getElementById('comments-empty');
+  if (empty) empty.style.display = comments.length === 0 ? 'block' : 'none';
+
+  let sorted = [...comments];
+  if (currentSort === 'oldest') sorted.reverse();
+  else if (currentSort === 'liked') sorted.sort((a,b) => (b.likes||0) - (a.likes||0));
+  else sorted.sort((a,b) => {
+    const ta = a.timestamp?.toMillis ? a.timestamp.toMillis() : (a.timestamp || 0);
+    const tb = b.timestamp?.toMillis ? b.timestamp.toMillis() : (b.timestamp || 0);
+    return tb - ta;
+  });
+
+  const list = document.getElementById('comments-list');
+  if (!list) return;
+  list.querySelectorAll('.comment-card').forEach(el => el.remove());
+
+  sorted.forEach(c => {
+    const [c1, c2] = getAvatarColor(c.name);
+    const initials  = getInitials(c.name);
+    const isLiked   = (c.likedBy || []).includes(uid);
+    const timeStr   = formatTime(c.timestamp);
+
+    const card = document.createElement('div');
+    card.className = 'comment-card';
+    card.id = 'comment-' + c.id;
+
+    const repliesHTML = (c.replies || []).map(r => {
+      const [rc1, rc2] = getAvatarColor(r.name);
+      return `<div class="reply-card">
+        <div class="reply-meta">
+          <div class="reply-avatar" style="background:linear-gradient(135deg,${rc1},${rc2})">${getInitials(r.name)}</div>
+          <span class="reply-author">${escapeHtml(r.name)}</span>
+          <span class="reply-time">${formatTime(r.timestamp)}</span>
+        </div>
+        <div class="reply-body">${escapeHtml(r.text)}</div>
+      </div>`;
+    }).join('');
+
+    card.innerHTML = `
+      <div class="comment-meta">
+        <div class="avatar" style="background:linear-gradient(135deg,${c1},${c2})">${initials}</div>
+        <div class="comment-info">
+          <div class="comment-author">${escapeHtml(c.name)}${c.dept?`<span style="font-size:.7rem;color:var(--text-muted);font-weight:400;margin-left:6px">${escapeHtml(c.dept)}</span>`:''}
+          </div>
+          <div class="comment-time"><i class="fa-regular fa-clock"></i>${timeStr}</div>
+        </div>
+      </div>
+      <div class="comment-body">${escapeHtml(c.text)}</div>
+      <div class="comment-actions">
+        <button class="action-btn ${isLiked?'liked':''}" onclick="likeComment('${c.id}')">
+          <i class="fa-${isLiked?'solid':'regular'} fa-heart like-icon"></i>
+          <span class="like-count">${c.likes||0}</span>
+        </button>
+        <button class="action-btn" onclick="toggleReply('${c.id}')">
+          <i class="fa-regular fa-comment"></i> Reply${c.replies?.length?` (${c.replies.length})`:''}
+        </button>
+      </div>
+      <div class="reply-area" id="reply-area-${c.id}">
+        <input type="text" class="reply-input" id="reply-name-${c.id}" placeholder="Your name (optional)" style="min-height:unset;height:38px;margin-bottom:6px"/>
+        <textarea class="reply-input" id="reply-input-${c.id}" placeholder="Write your reply…" maxlength="300"></textarea>
+        <button class="reply-submit" onclick="submitReply('${c.id}')">
+          <i class="fa-solid fa-paper-plane"></i>&nbsp; Send Reply
+        </button>
+        ${repliesHTML ? `<div class="replies-list">${repliesHTML}</div>` : ''}
+      </div>`;
+    list.appendChild(card);
+  });
+}
+
+function escapeHtml(str) {
+  return (str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#039;');
+}
+
+/* ═══════════════════════════════════════════════════
+   ADMIN PANEL
+   ═══════════════════════════════════════════════════ */
+let currentAdminTab = 'pending';
+
+function adminTrigger() {
+  adminClickCount++;
+  clearTimeout(adminClickTimer);
+  adminClickTimer = setTimeout(() => adminClickCount = 0, 2000);
+  if (adminClickCount >= 5) { adminClickCount = 0; openAdminPanel(); }
+}
+
+function openAdminPanel() {
+  const pass = prompt('🔐 Admin Password:');
+  if (pass === null) return;
+  if (pass !== ADMIN_PASS) { alert('❌ Wrong password!'); return; }
+  document.getElementById('admin-panel').style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  currentAdminTab = 'pending';
+  loadPendingComments();
+  loadApprovedComments();
+}
+
+function closeAdminPanel() {
+  document.getElementById('admin-panel').style.display = 'none';
+  document.body.style.overflow = '';
+}
+
+function switchAdminTab(tab) {
+  currentAdminTab = tab;
+  document.getElementById('tab-pending').classList.toggle('active', tab === 'pending');
+  document.getElementById('tab-approved').classList.toggle('active', tab === 'approved');
+  document.getElementById('admin-pending-list').style.display  = tab === 'pending'  ? 'block' : 'none';
+  document.getElementById('admin-approved-list').style.display = tab === 'approved' ? 'block' : 'none';
+}
+
+function refreshAdminTab() {
+  if (currentAdminTab === 'pending') loadPendingComments();
+  else loadApprovedComments();
+}
+
+function renderAdminList(containerId, docs, emptyMsg, actionsFn) {
+  const list = document.getElementById(containerId);
+  if (!docs.length) {
+    list.innerHTML = `<p style="color:var(--grn);text-align:center;padding:20px"><i class="fa-solid fa-check-circle"></i> ${emptyMsg}</p>`;
+    return;
+  }
+  const sorted = [...docs].sort((a,b) => (b.data().timestamp?.toMillis?.() || 0) - (a.data().timestamp?.toMillis?.() || 0));
+  list.innerHTML = `<p style="color:var(--text-muted);font-size:0.75rem;margin:10px 0 12px">${sorted.length} comment(s)</p>`;
+  sorted.forEach(doc => {
+    const c  = doc.data();
+    const ts = c.timestamp?.toDate ? c.timestamp.toDate().toLocaleString('en-IN') : 'N/A';
+    const div = document.createElement('div');
+    div.className = 'admin-comment-card';
+    div.id = 'admin-card-' + doc.id;
+    div.innerHTML = `
+      <div class="admin-comment-meta">
+        <strong>${escapeHtml(c.name)}</strong>
+        ${c.dept ? `<span style="color:var(--text-muted);font-size:.72rem"> · ${escapeHtml(c.dept)}</span>` : ''}
+        <span style="color:var(--text-muted);font-size:.68rem;float:right">${ts}</span>
+      </div>
+      <div class="admin-comment-body">${escapeHtml(c.text)}</div>
+      <div class="admin-comment-actions">${actionsFn(doc.id)}</div>`;
+    list.appendChild(div);
+  });
+}
+
+async function loadPendingComments() {
+  const list = document.getElementById('admin-pending-list');
+  list.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:16px"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</p>';
+  try {
+    const snap = await db.collection('comments').where('status','==','pending').get();
+    document.getElementById('badge-pending').textContent = snap.size;
+    renderAdminList('admin-pending-list', snap.docs,
+      'Koi pending comment nahi! Sab clear hai।',
+      id => `
+        <button class="admin-approve-btn" onclick="moderateComment('${id}','approved','pending')">
+          <i class="fa-solid fa-check"></i> Approve
+        </button>
+        <button class="admin-reject-btn" onclick="moderateComment('${id}','rejected','pending')">
+          <i class="fa-solid fa-xmark"></i> Reject
+        </button>`
+    );
+  } catch(e) {
+    list.innerHTML = `<p style="color:var(--red)">⚠ Error: ${e.message}</p>`;
+  }
+}
+
+async function loadApprovedComments() {
+  const list = document.getElementById('admin-approved-list');
+  list.innerHTML = '<p style="color:var(--text-dim);text-align:center;padding:16px"><i class="fa-solid fa-spinner fa-spin"></i> Loading…</p>';
+  try {
+    const snap = await db.collection('comments').where('status','==','approved').get();
+    document.getElementById('badge-approved').textContent = snap.size;
+    renderAdminList('admin-approved-list', snap.docs,
+      'Koi approved comment nahi।',
+      id => `
+        <button class="admin-approve-btn" onclick="moderateComment('${id}','rejected','approved')" style="background:rgba(251,146,60,0.12);border-color:rgba(251,146,60,0.3);color:var(--warn)">
+          <i class="fa-solid fa-eye-slash"></i> Unpublish
+        </button>
+        <button class="admin-reject-btn" onclick="deleteComment('${id}','approved')">
+          <i class="fa-solid fa-trash"></i> Delete
+        </button>`
+    );
+  } catch(e) {
+    list.innerHTML = `<p style="color:var(--red)">⚠ Error: ${e.message}</p>`;
+  }
+}
+
+async function moderateComment(id, action, fromTab) {
+  const card = document.getElementById('admin-card-' + id);
+  if (card) { card.style.opacity='0.5'; card.style.pointerEvents='none'; }
+  try {
+    await db.collection('comments').doc(id).update({ status: action });
+    if (card) {
+      const color = action==='approved' ? 'var(--grn)' : 'var(--warn)';
+      card.querySelector('.admin-comment-actions').innerHTML =
+        `<span style="color:${color};font-size:.8rem">${action==='approved' ? '✓ Approved & Live' : '⊘ Unpublished'}</span>`;
+    }
+    const pBadge = document.getElementById('badge-pending');
+    const aBadge = document.getElementById('badge-approved');
+    if (fromTab === 'pending') {
+      pBadge.textContent = Math.max(0, parseInt(pBadge.textContent||0) - 1);
+      if (action === 'approved') aBadge.textContent = parseInt(aBadge.textContent||0) + 1;
+    } else {
+      aBadge.textContent = Math.max(0, parseInt(aBadge.textContent||0) - 1);
+    }
+    showToast(action==='approved' ? '✓ Comment approved & live!' : '⊘ Comment unpublish kar diya');
+  } catch(e) {
+    if (card) { card.style.opacity='1'; card.style.pointerEvents=''; }
+    showToast('Error: ' + e.message);
+  }
+}
+
+async function deleteComment(id, fromTab) {
+  if (!confirm('Pakka delete karna hai? Yeh wapas nahi aayega।')) return;
+  const card = document.getElementById('admin-card-' + id);
+  if (card) { card.style.opacity='0.5'; card.style.pointerEvents='none'; }
+  try {
+    await db.collection('comments').doc(id).delete();
+    if (card) card.remove();
+    const badge = document.getElementById('badge-' + fromTab);
+    if (badge) badge.textContent = Math.max(0, parseInt(badge.textContent||0) - 1);
+    showToast('🗑 Comment permanently delete ho gaya');
+  } catch(e) {
+    if (card) { card.style.opacity='1'; card.style.pointerEvents=''; }
+    showToast('Error: ' + e.message);
+  }
+}
+
+/* ── Init ── */
+document.addEventListener('DOMContentLoaded', () => {
+  getUID();
+  initComments();
+});
+</script>
+</body>
+</html>
